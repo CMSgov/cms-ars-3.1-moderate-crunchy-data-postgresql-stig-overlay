@@ -11,8 +11,8 @@ depends:
 - name: postgresql-baseline 
   path: ../postgresql-baseline
   
-attributes:
-  - name: attr-name
-    type: attr-type
-    required:true/false
-    default: 'attr-value'
+# attributes:
+#  - name: attr-name
+#    type: attr-type
+#    required:true/false
+#    default: 'attr-value'
