@@ -40,7 +40,7 @@ cd ../cms-ars-3.1-high-crunchy-data-postgresql-stig-overlay
 git pull
 bundle install
 cd ..
-inspec exec cms-ars-3.1-high-crunchy-data-postgresql-stig-overlay --target=winrm://<your_target_host_name_or_ip_address> --user=<target_account_with_administrative_privileges> --password=<password_for_target_account> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json> --attrs=<path_to_your_attributes_file/name_of_your_attributes_file.yml>
+inspec exec cms-ars-3.1-high-crunchy-data-postgresql-stig-overlay --target=ssh://<your_target_host_name_or_ip_address> --user=<target_account_with_administrative_privileges> --password=<password_for_target_account> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json> --attrs=<path_to_your_attributes_file/name_of_your_attributes_file.yml>
 ```
 
 ## Viewing the JSON Results
