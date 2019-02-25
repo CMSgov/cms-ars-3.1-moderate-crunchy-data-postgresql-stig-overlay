@@ -1,3 +1,4 @@
+# From github.com/CrunchyData/postgresql-baseline/attributes.yml
 
 pg_owner: 'postgres'
 pg_group: 'postgres'
