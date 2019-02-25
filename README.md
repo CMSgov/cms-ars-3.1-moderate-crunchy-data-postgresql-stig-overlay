@@ -12,9 +12,10 @@ The latest versions and installation options are available at the [InSpec](http:
 
 The following attributes must be configured in an attributes file for the profile to run correctly. More information about InSpec attributes can be found in the [InSpec Profile Documentation](https://www.inspec.io/docs/reference/profiles/).
 
-````
+```
 # Description
 attr-name: 'attr-value'
+```
 
 ## Running This Overlay
 When the __"runner"__ host uses this profile overlay for the first time, follow these steps: 
