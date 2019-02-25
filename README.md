@@ -13,30 +13,8 @@ The latest versions and installation options are available at the [InSpec](http:
 The following attributes must be configured in an attributes file for the profile to run correctly. More information about InSpec attributes can be found in the [InSpec Profile Documentation](https://www.inspec.io/docs/reference/profiles/).
 
 ```
-# Base URL of the RSA Archer application
-url: 'https://urltoarcherapp.org/'
-
-# Name of the RSA Archer instance
-instancename: 'archerapp'
-
-# RSA Archer user domain
-user_domain: ''
-
-# REST API user with at least 'read-only' access ot 'access control' attributes on RSA Archer
-username: 'restapiuser'
-
-# Password of the user is pulled from the environment variable
-password: <%=ENV['ARCHER_API_PASSWORD']%>
-
-# Set to 'false' if the RSA Archer application uses self-signed certificates
-ssl_verify: true`
-```
-
-The ```ARCHER_API_PASSWORD``` environment variable must also be set using the following command so InSpec can access the RSA Archer application through the API.
-
-```
-export ARCHER_API_PASSWORD=s3cr3tpassw0rd
-```
+# Description
+attr-name: 'attr-value'
 
 ## Running This Overlay
 When the __"runner"__ host uses this profile overlay for the first time, follow these steps: 
@@ -44,24 +22,24 @@ When the __"runner"__ host uses this profile overlay for the first time, follow 
 ```
 mkdir profiles
 cd profiles
-git clone https://github.cms.gov/ispg/cms-ars-3.1-high-rsa-archer-6-security-configuration-guide-overlay.git
-git clone https://github.com/mitre/rsa-archer-6-security-configuration-guide-baseline.git
-cd cms-ars-3.1-high-rsa-archer-6-security-configuration-guide-overlay
+git clone https://github.com/CrunchyData/postgresql-baseline.git
+git clone https://github.cms.gov/ispg-dev/cms-ars-3.1-high-crunchy-data-postgresql-stig-overlay.git
+cd cms-ars-3.1-high-crunchy-data-postgresql-stig-overlay.git
 bundle install
 cd ..
-inspec exec cms-ars-3.1-high-rsa-archer-6-security-configuration-guide-overlay --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json> --attrs=<path_to_your_attributes_file/name_of_your_attributes_file.yml>
+inspec exec cms-ars-3.1-high-crunchy-data-postgresql-stig-overlay --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json> --attrs=<path_to_your_attributes_file/name_of_your_attributes_file.yml>
 ```
 
 For every successive run, follow these steps to always have the latest version of this overlay and dependent profiles:
 
 ```
-cd profiles/rsa-archer-6-security-configuration-guide-baseline
+cd profiles/CrunchyData/postgresql-baseline
 git pull
-cd ../cms-ars-3.1-high-rsa-archer-6-security-configuration-guide-overlay
+cd ../cms-ars-3.1-high-crunchy-data-postgresql-stig-overlay
 git pull
 bundle install
 cd ..
-inspec exec cms-ars-3.1-high-rsa-archer-6-security-configuration-guide-overlay --target=winrm://<your_target_host_name_or_ip_address> --user=<target_account_with_administrative_privileges> --password=<password_for_target_account> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json> --attrs=<path_to_your_attributes_file/name_of_your_attributes_file.yml>
+inspec exec cms-ars-3.1-high-crunchy-data-postgresql-stig-overlay --target=winrm://<your_target_host_name_or_ip_address> --user=<target_account_with_administrative_privileges> --password=<password_for_target_account> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json> --attrs=<path_to_your_attributes_file/name_of_your_attributes_file.yml>
 ```
 
 ## Viewing the JSON Results
@@ -71,17 +49,14 @@ The JSON results output file can be loaded into __[heimdall-lite](https://mitre.
 The JSON InSpec results file may also be loaded into a __[full heimdall server](https://github.com/mitre/heimdall)__, allowing for additional functionality such as to store and compare multiple profile runs.
 
 ## Getting Help
-To report a bug or feature request, please open an [issue](https://github.cms.gov/ispg/cms-ars-3.1-high-rsa-archer-6-security-configuration-guide-overlay/issues/new).
+To report a bug or feature request, please open an [issue](https://github.cms.gov/ispg-dev/cms-ars-3.1-high-crunchy-data-postgresql-stig-overlay/issues/new).
 
 ## Authors
 * Eugene Aronne
 * Danny Haynes
 
 ## Special Thanks
-* Rony Xavier
-
-## Additional References
-- [RSA Archer 6 API Guide](https://community.rsa.com/docs/DOC-41939).
+* Aaron Lippold
 
 ## License
 * This project is licensed under the terms of the [Apache 2.0 license](https://www.apache.org/licenses/LICENSE-2.0).
