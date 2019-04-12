@@ -23,7 +23,7 @@ When the __"runner"__ host uses this profile overlay for the first time, follow 
 ```
 mkdir profiles
 cd profiles
-git clone https://github.com/CrunchyData/postgresql-baseline.git
+git clone https://github.com/CrunchyData/pgstigcheck-inspec.git
 git clone https://github.cms.gov/ispg-dev/cms-ars-3.1-moderate-crunchy-data-postgresql-stig-overlay.git
 cd cms-ars-3.1-moderate-crunchy-data-postgresql-stig-overlay.git
 bundle install
@@ -34,7 +34,7 @@ inspec exec cms-ars-3.1-moderate-crunchy-data-postgresql-stig-overlay --reporter
 For every successive run, follow these steps to always have the latest version of this overlay and dependent profiles:
 
 ```
-cd profiles/CrunchyData/postgresql-baseline
+cd profiles/CrunchyData/pgstigcheck-inspec
 git pull
 cd ../cms-ars-3.1-moderate-crunchy-data-postgresql-stig-overlay
 git pull
