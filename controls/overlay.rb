@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-include_controls 'crunchydata-postgres-baseline' do
+include_controls 'pgstigcheck-inspec' do
   control 'V-72857' do
     desc 'The CMS standard for authentication is CMS-approved 
          PKI certificates.
