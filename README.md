@@ -24,11 +24,11 @@ When the __"runner"__ host uses this profile overlay for the first time, follow 
 mkdir profiles
 cd profiles
 git clone https://github.com/CrunchyData/pgstigcheck-inspec.git
-git clone https://github.cms.gov/ispg-dev/cms-ars-3.1-moderate-crunchy-data-postgresql-stig-overlay.git
-cd cms-ars-3.1-moderate-crunchy-data-postgresql-stig-overlay.git
+git clone https://github.cms.gov/ispg-dev/cms-ars-3.1-moderate-crunchy-data-postgresql-9.x-stig-overlay.git
+cd cms-ars-3.1-moderate-crunchy-data-postgresql-9.x-stig-overlay.git
 bundle install
 cd ..
-inspec exec cms-ars-3.1-moderate-crunchy-data-postgresql-stig-overlay --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json> --attrs=<path_to_your_attributes_file/name_of_your_attributes_file.yml>
+inspec exec cms-ars-3.1-moderate-crunchy-data-postgresql-9.x-stig-overlay --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json> --attrs=<path_to_your_attributes_file/name_of_your_attributes_file.yml>
 ```
 
 For every successive run, follow these steps to always have the latest version of this overlay and dependent profiles:
@@ -36,11 +36,11 @@ For every successive run, follow these steps to always have the latest version o
 ```
 cd profiles/CrunchyData/pgstigcheck-inspec
 git pull
-cd ../cms-ars-3.1-moderate-crunchy-data-postgresql-stig-overlay
+cd ../cms-ars-3.1-moderate-crunchy-data-postgresql-9.x-stig-overlay
 git pull
 bundle install
 cd ..
-inspec exec cms-ars-3.1-moderate-crunchy-data-postgresql-stig-overlay --target=ssh://<your_target_host_name_or_ip_address> --user=<target_account_with_administrative_privileges> --password=<password_for_target_account> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json> --attrs=<path_to_your_attributes_file/name_of_your_attributes_file.yml>
+inspec exec cms-ars-3.1-moderate-crunchy-data-postgresql-9.x-stig-overlay --target=ssh://<your_target_host_name_or_ip_address> --user=<target_account_with_administrative_privileges> --password=<password_for_target_account> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json> --attrs=<path_to_your_attributes_file/name_of_your_attributes_file.yml>
 ```
 
 ## Viewing the JSON Results
@@ -50,7 +50,7 @@ The JSON results output file can be loaded into __[heimdall-lite](https://mitre.
 The JSON InSpec results file may also be loaded into a __[full heimdall server](https://github.com/mitre/heimdall)__, allowing for additional functionality such as to store and compare multiple profile runs.
 
 ## Getting Help
-To report a bug or feature request, please open an [issue](https://github.cms.gov/ispg-dev/cms-ars-3.1-moderate-crunchy-data-postgresql-stig-overlay/issues/new).
+To report a bug or feature request, please open an [issue](https://github.cms.gov/ispg-dev/cms-ars-3.1-moderate-crunchy-data-9.x-postgresql-stig-overlay/issues/new).
 
 ## Authors
 * Eugene Aronne
