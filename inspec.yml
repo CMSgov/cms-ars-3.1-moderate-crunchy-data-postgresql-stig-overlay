@@ -8,8 +8,8 @@ summary:
 version: 0.1.0
 
 depends:
-- name: postgresql-baseline 
-  path: ../postgresql-baseline
+- name: pgstigcheck-inspec
+  path: ../pgstigcheck-inspec
   
 # attributes:
 #  - name: attr-name
