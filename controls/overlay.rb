@@ -57,7 +57,10 @@ include_controls 'pgstigcheck-inspec' do
   end
 
   control 'V-72863' do
-
+    impact 'none'
+    desc 'caveat', 'Not applicable for this CMS ARS 3.1 overlay, 
+    since the related security control is not applied to this 
+    system categorization in CMS ARS 3.1'
   end
 
   control 'V-72961' do
@@ -144,7 +147,55 @@ include_controls 'pgstigcheck-inspec' do
   end
 
   control 'V-72991' do
+    title 'PostgreSQL must use CMS-approved cryptography to protect 
+    classified sensitive information in accordance with the data owners 
+    requirements.'
+    desc 'Use of weak or untested encryption algorithms undermines the 
+    purposes of utilizing encryption to protect data. The application 
+    must implement cryptographic modules adhering to the higher standards 
+    approved by the federal government since this provides assurance 
+    they have been tested and validated.
 
+    It is the responsibility of the data owner to assess the cryptography 
+    requirements in light of applicable federal laws, Executive Orders, 
+    directives, policies, regulations, and standards.'
+    desc 'check', 'If PostgreSQL is not using CMS-approved cryptography 
+    to protect classified sensitive information in accordance with 
+    applicable federal laws, Executive Orders, directives, policies, 
+    regulations, and standards, this is a finding.
+
+    To check if PostgreSQL is configured to use SSL, as the database 
+    administrator (shown here as "postgres"), run the following SQL:
+
+    $ sudo su - postgres
+    $ psql -c "SHOW ssl"
+
+    If SSL is off, this is a finding.'
+    desc 'fix', 'Note: The following instructions use the PGDATA 
+    environment variable. See supplementary content APPENDIX-F for 
+    instructions on configuring PGDATA.
+
+    To configure PostgreSQL to use SSL, as a database administrator 
+    (shown here as "postgres"), edit postgresql.conf:
+
+    $ sudo su - postgres
+    $ vi ${PGDATA?}/postgresql.conf
+
+    Add the following parameter:
+
+    ssl = on
+
+    Now, as the system administrator, reload the server with the 
+    new configuration:
+
+    # SYSTEMD SERVER ONLY
+    $ sudo systemctl reload postgresql-9.5
+
+    # INITD SERVER ONLY
+    $ sudo service postgresql-9.5 reload
+
+    For more information on configuring PostgreSQL to use SSL, see 
+    supplementary content APPENDIX-G.'
   end
 
   control 'V-73015' do
@@ -304,15 +355,19 @@ include_controls 'pgstigcheck-inspec' do
   end
 
   control 'V-73037' do
-
-  end
+    tag "cci": ['CCI-001184']
+    tag "nist": ['SC-23', 'Rev_4']
+   end
 
   control 'V-73045' do
-
+    tag	"cci": ['CCI-001848']
+    tag "nist": ['AU-4', 'Rev_4']
   end
 
   control 'V-73051' do
-
+    describe 'For this CMS ARS 3.1 overlay, this control must be reviewed manually' do 
+      skip 'For this CMS ARS 3.1 overlay, this control must be reviewed manually'
+    end
   end
 
   control 'V-73055' do
