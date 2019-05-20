@@ -107,7 +107,7 @@ The JSON results output file can be loaded into __[heimdall-lite](https://mitre.
 The JSON InSpec results file may also be loaded into a __[full heimdall server](https://github.com/mitre/heimdall)__, allowing for additional functionality such as to store and compare multiple profile runs.
 
 ## Getting Help
-To report a bug or feature request, please open an [issue](https://github.cms.gov/ispg/cms-ars-3.1-moderate-crunchy-data-9-postgresql-stig-overlay/issues/new).
+To report a bug or feature request, please open an [issue](https://github.cms.gov/ISPG/cms-ars-3.1-moderate-crunchy-data-postgresql-9-stig-overlay/issues/new).
 
 ## Authors
 * Eugene Aronne
