@@ -3,13 +3,11 @@
 include_controls 'pgstigcheck-inspec' do
 
   control "V-72841" do
-
    sql = postgres_session(attribute('pg_dba'), attribute('pg_dba_password'), attribute('pg_host'))
 
     describe sql.query('SHOW port;', [attribute('pg_db')]) do
       its('output') { should cmp attribute('pg_port') }
     end
-
   end
 
   control "V-72851" do
@@ -21,60 +19,25 @@ include_controls 'pgstigcheck-inspec' do
   end
 
   control 'V-72857' do
-    desc 'The CMS standard for authentication is CMS-approved 
-         PKI certificates.
+    desc 'The CMS standard for authentication is CMS-approved PKI certificates.
 
-         Authentication based on User ID and Password may be 
-         used only when it is not possible to employ a PKI 
-         certificate, and requires AO approval.
+    Authentication based on User ID and Password may be used only when it is not possible to employ a PKI certificate, and requires AO approval.
 
-         In such cases, passwords need to be protected at all 
-         times, and encryption is the standard method for 
-         protecting passwords during transmission.
+    In such cases, passwords need to be protected at all times, and encryption is the standard method for protecting passwords during transmission.
 
-         PostgreSQL passwords sent in clear text format across 
-         the network are vulnerable to discovery by unauthorized 
-         users. Disclosure of passwords may easily lead to 
-         unauthorized access to the database.'
+    PostgreSQL passwords sent in clear text format across the network are vulnerable to discovery by unauthorized users. Disclosure of passwords may easily lead to unauthorized access to the database.'
   end
 
   control 'V-72859' do
-    desc 'Authentication with a CMS-approved PKI certificate does 
-         not necessarily imply authorization to access PostgreSQL. 
-         To mitigate the risk of unauthorized access to sensitive 
-         information by entities that have been issued certificates 
-         by CMS-approved PKIs, all CMS systems, including databases, 
-         must be properly configured to implement access control 
-         policies.
+    desc 'Authentication with a CMS-approved PKI certificate does not necessarily imply authorization to access PostgreSQL. To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by CMS-approved PKIs, all CMS systems, including databases, must be properly configured to implement access control policies.
 
-         Successful authentication must not automatically give an 
-         entity access to an asset or security boundary. 
-         Authorization procedures and controls must be implemented 
-         to ensure each authenticated entity also has a validated 
-         and current authorization. Authorization is the process 
-         of determining whether an entity, once authenticated, is 
-         permitted to access a specific asset. Information systems 
-         use access control policies and enforcement mechanisms to 
-         implement this requirement.
+    Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.
 
-         Access control policies include identity-based policies, 
-         role-based policies, and attribute-based policies. Access 
-         enforcement mechanisms include access control lists, 
-         access control matrices, and cryptography. These policies 
-         and mechanisms must be employed by the application to 
-         control access between users (or processes acting on behalf 
-         of users) and objects (e.g., devices, files, records, 
-         processes, programs, and domains) in the information system.
+    Access control policies include identity-based policies, role-based policies, and attribute-based policies. Access enforcement mechanisms include access control lists, access control matrices, and cryptography. These policies and mechanisms must be employed by the application to control access between users (or processes acting on behalf of users) and objects (e.g., devices, files, records, processes, programs, and domains) in the information system.
 
-         This requirement is applicable to access control enforcement   
-         applications, a category that includes database management 
-         systems. If PostgreSQL does not follow applicable policy when 
-         approving access, it may be in conflict with networks or other 
-         applications in the information system. This may result in 
-         users either gaining or being denied access inappropriately 
-         and in conflict with applicable policy.'
+    This requirement is applicable to access control enforcement applications, a category that includes database management systems. If PostgreSQL does not follow applicable policy when approving access, it may be in conflict with networks or other applications in the information system. This may result in users either gaining or being denied access inappropriately and in conflict with applicable policy.'
 
-         sql = postgres_session(attribute('pg_dba'), attribute('pg_dba_password'), attribute('pg_host'))
+    sql = postgres_session(attribute('pg_dba'), attribute('pg_dba_password'), attribute('pg_host'))
 
     roles_sql = 'SELECT r.rolname FROM pg_catalog.pg_roles r;'
     roles_query = sql.query(roles_sql, [attribute('pg_db')])
@@ -133,7 +96,7 @@ include_controls 'pgstigcheck-inspec' do
   end
 
   control 'V-72863' do
-    impact 'none'
+    impact 0.0
     desc 'caveat', 'Not applicable for this CMS ARS 3.1 overlay, 
     since the related security control is not applied to this 
     system categorization in CMS ARS 3.1'
@@ -199,33 +162,13 @@ include_controls 'pgstigcheck-inspec' do
   end
 
   control "V-72883" do
-    title "PostgreSQL must enforce discretionary access control policies, as
-    defined by the data owner, over defined subjects and objects."
-    desc  "Discretionary Access Control (DAC) is based on the notion that
-    individual users are \"owners\" of objects and therefore have discretion over
-    who should be authorized to access the object and in which mode (e.g., read or
-    write). Ownership is usually acquired as a consequence of creating the object
-    or via specified ownership assignment. DAC allows the owner to determine who
-    will have access to objects they control. An example of DAC includes
-    user-controlled table permissions.
-    When discretionary access control policies are implemented, subjects are not
-    constrained with regard to what actions they can take with information for
-    which they have already been granted access. Thus, subjects that have been
-    granted access to information are not prevented from passing (i.e., the
-    subjects have the discretion to pass) the information to other subjects or
+    title "PostgreSQL must enforce discretionary access control policies, as defined by the data owner, over defined subjects and objects."
+    desc  "Discretionary Access Control (DAC) is based on the notion that individual users are \"owners\" of objects and therefore have discretion over who should be authorized to access the object and in which mode (e.g., read or write). Ownership is usually acquired as a consequence of creating the object or via specified ownership assignment. DAC allows the owner to determine who will have access to objects they control. An example of DAC includes user-controlled table permissions.
+    When discretionary access control policies are implemented, subjects are not constrained with regard to what actions they can take with information for which they have already been granted access. Thus, subjects that have been granted access to information are not prevented from passing (i.e., the subjects have the discretion to pass) the information to other subjects or
     objects.
     A subject that is constrained in its operation by Mandatory Access Control
-    policies is still able to operate under the less rigorous constraints of this
-    requirement. Thus, while Mandatory Access Control imposes constraints
-    preventing a subject from passing information to another subject operating at
-    a different sensitivity level, this requirement permits the subject to pass
-    the information to any subject at the same sensitivity level.
-    The policy is bounded by the information system boundary. Once the information
-    is passed outside of the control of the information system, additional means
-    may be required to ensure the constraints remain in effect. While the older,
-    more traditional definitions of discretionary access control require i
-    dentity-based access control, that limitation is not required for this use of
-    discretionary access control."
+    policies is still able to operate under the less rigorous constraints of this requirement. Thus, while Mandatory Access Control imposes constraints preventing a subject from passing information to another subject operating at a different sensitivity level, this requirement permits the subject to pass the information to any subject at the same sensitivity level.
+    The policy is bounded by the information system boundary. Once the information is passed outside of the control of the information system, additional means may be required to ensure the constraints remain in effect. While the older, more traditional definitions of discretionary access control require identity-based access control, that limitation is not required for this use of discretionary access control."
     impact 0.5
     tag "severity": "medium"
     tag "gtitle": "SRG-APP-000328-DB-000301"
@@ -234,30 +177,20 @@ include_controls 'pgstigcheck-inspec' do
     tag "stig_id": "PGS9-00-002200"
     tag "cci": ["CCI-002165"]
     tag "nist": ["AC-3 (4)", "Rev_4"]
-    tag "check": "Review system documentation to identify the required
-    discretionary access control (DAC).
-    Review the security configuration of the database and PostgreSQL. If
-    applicable, review the security configuration of the application(s) using the
-    database.
-    If the discretionary access control defined in the documentation is not
-    implemented in the security configuration, this is a finding.
-    If any database objects are found to be owned by users not authorized to own
-    database objects, this is a finding.
-    To check the ownership of objects in the database, as the database
-    administrator, run the following:
+    tag "check": "Review system documentation to identify the required discretionary access control (DAC).
+    Review the security configuration of the database and PostgreSQL. If applicable, review the security configuration of the application(s) using the database.
+    If the discretionary access control defined in the documentation is not implemented in the security configuration, this is a finding.
+    If any database objects are found to be owned by users not authorized to own database objects, this is a finding.
+    To check the ownership of objects in the database, as the database administrator, run the following:
     $ sudo su - postgres
     $ psql -c \"\\dn *.*\"
     $ psql -c \"\\dt *.*\"
     $ psql -c \"\\ds *.*\"
     $ psql -c \"\\dv *.*\"
     $ psql -c \"\\df+ *.*\"
-    If any role is given privileges to objects it should not have, this is a
-    finding."
-    tag "fix": "Implement the organization's DAC policy in the security
-    configuration of the database and PostgreSQL, and, if applicable, the security
-    configuration of the application(s) using the database.
-    To GRANT privileges to roles, as the database administrator (shown here as
-    \"postgres\"), run statements like the following examples:
+    If any role is given privileges to objects it should not have, this is a finding."
+    tag "fix": "Implement the organization's DAC policy in the security configuration of the database and PostgreSQL, and, if applicable, the security configuration of the application(s) using the database.
+    To GRANT privileges to roles, as the database administrator (shown here as \"postgres\"), run statements like the following examples:
     $ sudo su - postgres
     $ psql -c \"CREATE SCHEMA test\"
     $ psql -c \"GRANT CREATE ON SCHEMA test TO bob\"
@@ -372,18 +305,8 @@ include_controls 'pgstigcheck-inspec' do
   end
 
   control "V-72897" do
-    title "Database objects (including but not limited to tables, indexes,
-    storage, trigger procedures, functions, links to software external to
-    PostgreSQL, etc.) must be owned by database/DBMS principals authorized for
-    ownership."
-    desc  "Within the database, object ownership implies full privileges to the
-    owned object, including the privilege to assign access to the owned objects
-    to other subjects. Database functions and procedures can be coded using
-    definer's rights. This allows anyone who utilizes the object to perform the
-    actions if they were the owner. If not properly managed, this can lead to
-    privileged actions being taken by unauthorized individuals.
-    Conversely, if critical tables or other objects rely on unauthorized owner
-    accounts, these objects may be lost when an account is removed."
+    title "Database objects (including but not limited to tables, indexes, storage, trigger procedures, functions, links to software external to PostgreSQL, etc.) must be owned by database/DBMS principals authorized for ownership."
+    desc  "Within the database, object ownership implies full privileges to the owned object, including the privilege to assign access to the owned objects to other subjects. Database functions and procedures can be coded using definer's rights. This allows anyone who utilizes the object to perform the actions if they were the owner. If not properly managed, this can lead to privileged actions being taken by unauthorized individuals. Conversely, if critical tables or other objects rely on unauthorized owner accounts, these objects may be lost when an account is removed."
     impact 0.5
     tag "severity": "medium"
     tag "gtitle": "SRG-APP-000133-DB-000200"
@@ -392,28 +315,21 @@ include_controls 'pgstigcheck-inspec' do
     tag "stig_id": "PGS9-00-003100"
     tag "cci": ["CCI-001499"]
     tag "nist": ["CM-5 (6)", "Rev_4"]
-    tag "check": "Review system documentation to identify accounts authorized to
-    own database objects. Review accounts that own objects in the database(s).
-    If any database objects are found to be owned by users not authorized to own
-    database objects, this is a finding.
-    To check the ownership of objects in the database, as the database
-    administrator, run the following SQL:
+    tag "check": "Review system documentation to identify accounts authorized to own database objects. Review accounts that own objects in the database(s). If any database objects are found to be owned by users not authorized to own database objects, this is a finding.
+    To check the ownership of objects in the database, as the database administrator, run the following SQL:
     $ sudo su - postgres
     $ psql -x -c \"\\dn *.*\"
     $ psql -x -c \"\\dt *.*\"
     $ psql -x -c \"\\ds *.*\"
     $ psql -x -c \"\\dv *.*\"
     $ psql -x -c \"\\df+ *.*\"
-    If any object is not owned by an authorized role for ownership, this is a
-    finding."
-    tag "fix": "Assign ownership of authorized objects to authorized object owner
-    accounts.
+    If any object is not owned by an authorized role for ownership, this is a finding."
+    tag "fix": "Assign ownership of authorized objects to authorized object owner accounts.
     #### Schema Owner
     To create a schema owned by the user bob, run the following SQL:
     $ sudo su - postgres
     $ psql -c \"CREATE SCHEMA test AUTHORIZATION bob
-    To alter the ownership of an existing object to be owned by the user bob,
-    run the following SQL:
+    To alter the ownership of an existing object to be owned by the user bob, run the following SQL:
     $ sudo su - postgres
     $ psql -c \"ALTER SCHEMA test OWNER TO bob\""
 
@@ -540,18 +456,9 @@ include_controls 'pgstigcheck-inspec' do
   end
 
   control "V-72897" do
-    title "Database objects (including but not limited to tables, indexes,
-    storage, trigger procedures, functions, links to software external to
-    PostgreSQL, etc.) must be owned by database/DBMS principals authorized for
-    ownership."
-    desc  "Within the database, object ownership implies full privileges to the
-    owned object, including the privilege to assign access to the owned objects
-    to other subjects. Database functions and procedures can be coded using
-    definer's rights. This allows anyone who utilizes the object to perform the
-    actions if they were the owner. If not properly managed, this can lead to
-    privileged actions being taken by unauthorized individuals.
-    Conversely, if critical tables or other objects rely on unauthorized owner
-    accounts, these objects may be lost when an account is removed."
+    title "Database objects (including but not limited to tables, indexes, storage, trigger procedures, functions, links to software external to PostgreSQL, etc.) must be owned by database/DBMS principals authorized for ownership."
+    desc  "Within the database, object ownership implies full privileges to the owned object, including the privilege to assign access to the owned objects to other subjects. Database functions and procedures can be coded using definer's rights. This allows anyone who utilizes the object to perform the actions if they were the owner. If not properly managed, this can lead to privileged actions being taken by unauthorized individuals.
+    Conversely, if critical tables or other objects rely on unauthorized owner accounts, these objects may be lost when an account is removed."
     impact 0.5
     tag "severity": "medium"
     tag "gtitle": "SRG-APP-000133-DB-000200"
@@ -560,28 +467,22 @@ include_controls 'pgstigcheck-inspec' do
     tag "stig_id": "PGS9-00-003100"
     tag "cci": ["CCI-001499"]
     tag "nist": ["CM-5 (6)", "Rev_4"]
-    tag "check": "Review system documentation to identify accounts authorized to
-    own database objects. Review accounts that own objects in the database(s).
-    If any database objects are found to be owned by users not authorized to own
-    database objects, this is a finding.
-    To check the ownership of objects in the database, as the database
-    administrator, run the following SQL:
+    tag "check": "Review system documentation to identify accounts authorized to own database objects. Review accounts that own objects in the database(s).
+    If any database objects are found to be owned by users not authorized to own database objects, this is a finding.
+    To check the ownership of objects in the database, as the database administrator, run the following SQL:
     $ sudo su - postgres
     $ psql -x -c \"\\dn *.*\"
     $ psql -x -c \"\\dt *.*\"
     $ psql -x -c \"\\ds *.*\"
     $ psql -x -c \"\\dv *.*\"
     $ psql -x -c \"\\df+ *.*\"
-    If any object is not owned by an authorized role for ownership, this is a
-    finding."
-    tag "fix": "Assign ownership of authorized objects to authorized object owner
-    accounts.
+    If any object is not owned by an authorized role for ownership, this is a finding."
+    tag "fix": "Assign ownership of authorized objects to authorized object owner accounts.
     #### Schema Owner
     To create a schema owned by the user bob, run the following SQL:
     $ sudo su - postgres
     $ psql -c \"CREATE SCHEMA test AUTHORIZATION bob
-    To alter the ownership of an existing object to be owned by the user bob,
-    run the following SQL:
+    To alter the ownership of an existing object to be owned by the user bob, run the following SQL:
     $ sudo su - postgres
     $ psql -c \"ALTER SCHEMA test OWNER TO bob\""
 
@@ -707,47 +608,18 @@ include_controls 'pgstigcheck-inspec' do
     end
   end
   if PG_SHARED_DIRS.empty?
-      describe "When dealing with change control issues, it should be noted, any
-      changes to the hardware, software, and/or firmware components of the
-      information system and/or application can potentially have significant effects
-      on the overall security of the system.
-      Multiple applications can provide a cumulative negative effect. A
-      vulnerability and subsequent exploit to one application can lead to an exploit
-      of other applications sharing the same security context. For example, an
-      exploit to a web server process that leads to unauthorized administrative
-      access to host system directories can most likely lead to a compromise of all
-      applications hosted by the same system. Database software not installed using
-      dedicated directories both threatens and is threatened by other hosted
-      applications. Access controls defined for one application may by default
-      provide access to the other application's database objects or directories. Any
-      method that provides any level of separation of security context assists in
-      the protection between applications." do
+      describe "When dealing with change control issues, it should be noted, any changes to the hardware, software, and/or firmware components of the information system and/or application can potentially have significant effects on the overall security of the system.
+      Multiple applications can provide a cumulative negative effect. A vulnerability and subsequent exploit to one application can lead to an exploit of other applications sharing the same security context. For example, an exploit to a web server process that leads to unauthorized administrative access to host system directories can most likely lead to a compromise of all applications hosted by the same system. Database software not installed using dedicated directories both threatens and is threatened by other hosted applications. Access controls defined for one application may by default provide access to the other application's database objects or directories. Any method that provides any level of separation of security context assists in the protection between applications." do
         skip "This control is N/A, as no postgres shared directories exist"
     end
   end
  end
 
   control "V-72905" do
-    title "Execution of software modules (to include functions and trigger
-    procedures) with elevated privileges must be restricted to necessary cases
-    only."
-    desc  "In certain situations, to provide required functionality, PostgreSQL
-    needs to execute internal logic (stored procedures, functions, triggers, etc.)
-    and/or external code modules with elevated privileges. However, if the
-    privileges required for execution are at a higher level than the privileges
-    assigned to organizational users invoking the functionality
-    applications/programs, those users are indirectly provided with greater
-    privileges than assigned by organizations.
-    Privilege elevation must be utilized only where necessary and protected
-    from misuse.
-    This calls for inspection of application source code, which will require
-    collaboration with the application developers. It is recognized that in
-    many cases, the database administrator (DBA) is organizationally separate
-    from the application developers, and may have limited, if any, access to
-    source code. Nevertheless, protections of this type are so important to the
-    secure operation of databases that they must not be ignored. At a minimum,
-    the DBA must attempt to obtain assurances from the development organization
-    that this issue has been addressed, and must document what has been discovered."
+    title "Execution of software modules (to include functions and trigger procedures) with elevated privileges must be restricted to necessary cases only."
+    desc  "In certain situations, to provide required functionality, PostgreSQL needs to execute internal logic (stored procedures, functions, triggers, etc.) and/or external code modules with elevated privileges. However, if the privileges required for execution are at a higher level than the privileges assigned to organizational users invoking the functionality applications/programs, those users are indirectly provided with greater privileges than assigned by organizations.
+    Privilege elevation must be utilized only where necessary and protected from misuse.
+    This calls for inspection of application source code, which will require collaboration with the application developers. It is recognized that in many cases, the database administrator (DBA) is organizationally separate from the application developers, and may have limited, if any, access to source code. Nevertheless, protections of this type are so important to the secure operation of databases that they must not be ignored. At a minimum, the DBA must attempt to obtain assurances from the development organization that this issue has been addressed, and must document what has been discovered."
     impact 0.5
     tag "severity": "medium"
     tag "gtitle": "SRG-APP-000342-DB-000302"
@@ -756,28 +628,15 @@ include_controls 'pgstigcheck-inspec' do
     tag "stig_id": "PGS9-00-003600"
     tag "cci": ["CCI-002233"]
     tag "nist": ["AC-6 (8)", "Rev_4"]
-    tag "check": "Functions in PostgreSQL can be created with the SECURITY
-    DEFINER option. When SECURITY DEFINER functions are executed by a user, said
-    function is run with the privileges of the user who created it.
-    To list all functions that have SECURITY DEFINER, as, the database
-    administrator (shown here as \"postgres\"), run the following SQL:
+    tag "check": "Functions in PostgreSQL can be created with the SECURITY DEFINER option. When SECURITY DEFINER functions are executed by a user, said function is run with the privileges of the user who created it. To list all functions that have SECURITY DEFINER, as, the database administrator (shown here as \"postgres\"), run the following SQL:
     $ sudo su - postgres
-    $ psql -c \"SELECT nspname, proname, proargtypes, prosecdef, rolname,
-    proconfig FROM pg_proc p JOIN pg_namespace n ON p.pronamespace = n.oid JOIN
-    pg_authid a ON a.oid = p.proowner WHERE prosecdef OR NOT proconfig IS NULL;\"
-    In the query results, a prosecdef value of \"t\" on a row indicates that that
-    function uses privilege elevation.
-    If elevation of PostgreSQL privileges is utilized but not documented, this is
-    a finding.
-    If elevation of PostgreSQL privileges is documented, but not implemented as
-    described in the documentation, this is a finding.
-    If the privilege-elevation logic can be invoked in ways other than intended,
-    or in contexts other than intended, or by subjects/principals other than
-    intended, this is a finding."
-    tag "fix": "Determine where, when, how, and by what principals/subjects
-    elevated privilege is needed.
-    To change a SECURITY DEFINER function to SECURITY INVOKER, as the database
-    administrator (shown here as \"postgres\"), run the following SQL:\
+    $ psql -c \"SELECT nspname, proname, proargtypes, prosecdef, rolname, proconfig FROM pg_proc p JOIN pg_namespace n ON p.pronamespace = n.oid JOIN pg_authid a ON a.oid = p.proowner WHERE prosecdef OR NOT proconfig IS NULL;\"
+    In the query results, a prosecdef value of \"t\" on a row indicates that that function uses privilege elevation.
+    If elevation of PostgreSQL privileges is utilized but not documented, this is a finding.
+    If elevation of PostgreSQL privileges is documented, but not implemented as described in the documentation, this is a finding.
+    If the privilege-elevation logic can be invoked in ways other than intended, or in contexts other than intended, or by subjects/principals other than intended, this is a finding."
+    tag "fix": "Determine where, when, how, and by what principals/subjects elevated privilege is needed.
+    To change a SECURITY DEFINER function to SECURITY INVOKER, as the database administrator (shown here as \"postgres\"), run the following SQL:\
     $ sudo su - postgres
     $ psql -c \"ALTER FUNCTION <function_name> SECURITY INVOKER;\""
 
@@ -821,43 +680,19 @@ include_controls 'pgstigcheck-inspec' do
   end
 
   control 'V-72961' do
-    desc 'For completeness of forensic analysis, it is necessary to 
-         track who logs on to PostgreSQL.
+    desc 'For completeness of forensic analysis, it is necessary to track who logs on to PostgreSQL.
 
-         Concurrent connections by the same user from multiple 
-         workstations may be valid use of the system; or such 
-         connections may be due to improper circumvention of the        
-         requirement to use the CAC/PIV for authentication; or they may 
-         indicate unauthorized account sharing; or they may be because 
-         an account has been compromised.
+    Concurrent connections by the same user from multiple workstations may be valid use of the system; or such connections may be due to improper circumvention of the requirement to use the CAC/PIV for authentication; or they may indicate unauthorized account sharing; or they may be because an account has been compromised.
 
-         (If the fact of multiple, concurrent logons by a given user 
-         can be reliably reconstructed from the log entries for other 
-         events (logons/connections; voluntary and involuntary 
-         disconnections), then it is not mandatory to create additional 
-         log entries specifically for this.)'
+    (If the fact of multiple, concurrent logons by a given user can be reliably reconstructed from the log entries for other events (logons/connections; voluntary and involuntary disconnections), then it is not mandatory to create additional log entries specifically for this.)'
   end
 
   control 'V-72979' do
-    desc 'The CMS standard for authentication is CMS-approved PKI 
-         certificates.
+    desc 'The CMS standard for authentication is CMS-approved PKI certificates.
 
-         A certificate certification path is the path from the end 
-         entity certificate to a trusted root certification authority 
-         (CA). Certification path validation is necessary for a relying 
-         party to make an informed decision regarding acceptance of an 
-         end entity certificate. Certification path validation includes 
-         checks such as certificate issuer trust, time validity and 
-         revocation status for each certificate in the certification 
-         path. Revocation status information for CA and subject 
-         certificates in a certification path is commonly provided via 
-         certificate revocation lists (CRLs) or online certificate 
-         status protocol (OCSP) responses.
+    A certificate certification path is the path from the end entity certificate to a trusted root certification authority (CA). Certification path validation is necessary for a relying party to make an informed decision regarding acceptance of an end entity certificate. Certification path validation includes checks such as certificate issuer trust, time validity and revocation status for each certificate in the certification path. Revocation status information for CA and subject certificates in a certification path is commonly provided via certificate revocation lists (CRLs) or online certificate status protocol (OCSP) responses.
 
-         Database Management Systems that do not validate certificates 
-         by performing RFC 5280-compliant certification path validation 
-         are in danger of accepting certificates that are invalid and/or 
-         counterfeit. This could allow unauthorized access to the database.'
+    Database Management Systems that do not validate certificates by performing RFC 5280-compliant certification path validation are in danger of accepting certificates that are invalid and/or counterfeit. This could allow unauthorized access to the database.'
     sql = postgres_session(attribute('pg_dba'), attribute('pg_dba_password'), attribute('pg_host'))
 
     ssl_crl_file_query = sql.query('SHOW ssl_crl_file;', [attribute('pg_db')])
@@ -868,79 +703,41 @@ include_controls 'pgstigcheck-inspec' do
   end
 
   control 'V-72983' do
-    title 'PostgreSQL must provide audit record generation capability 
-          for CMS-defined auditable events within all DBMS/database 
-          components.'
-    desc 'Without the capability to generate audit records, it would 
-         be difficult to establish, correlate, and investigate the events 
-         relating to an incident or identify those responsible for one. 
+    title 'PostgreSQL must provide audit record generation capability for CMS-defined auditable events within all DBMS/database components.'
+    desc 'Without the capability to generate audit records, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one. 
 
-         Audit records can be generated from various components within 
-         PostgreSQL (e.g., process, module). Certain specific application 
-         functionalities may be audited as well. The list of audited events 
-         is the set of events for which audits are to be generated. This 
-         set of events is typically a subset of the list of all events for 
-         which the system is capable of generating audit records.
+    Audit records can be generated from various components within PostgreSQL (e.g., process, module). Certain specific application functionalities may be audited as well. The list of audited events is the set of events for which audits are to be generated. This set of events is typically a subset of the list of all events for which the system is capable of generating audit records.
 
-         CMS has defined the list of events for which PostgreSQL will 
-         provide an audit record generation capability as the following: 
+    CMS has defined the list of events for which PostgreSQL will provide an audit record generation capability as the following: 
 
-         (i) Successful and unsuccessful attempts to access, modify, or 
-         delete privileges, security objects, security levels, or categories 
-         of information (e.g., classification levels);
-         (ii) Access actions, such as successful and unsuccessful logon 
-         attempts, privileged activities, or other system-level access, 
-         starting and ending time for user access to the system, concurrent 
-         logons from different workstations, successful and unsuccessful 
-         accesses to objects, all program initiations, and all direct 
-         access to the information system; and
-         (iii) All account creation, modification, disabling, and 
-         termination actions.
+    (i) Successful and unsuccessful attempts to access, modify, or delete privileges, security objects, security levels, or categories of information (e.g., classification levels);
+    (ii) Access actions, such as successful and unsuccessful logon attempts, privileged activities, or other system-level access, starting and ending time for user access to the system, concurrent logons from different workstations, successful and unsuccessful accesses to objects, all program initiations, and all direct access to the information system; and
+    (iii) All account creation, modification, disabling, and termination actions.
 
-         Organizations may define additional events requiring continuous 
-         or ad hoc auditing.'
-    desc 'fix', 'Configure PostgreSQL to generate audit records for at 
-         least the CMS minimum set of events.
+    Organizations may define additional events requiring continuous or ad hoc auditing.'
+    desc 'fix', 'Configure PostgreSQL to generate audit records for at least the CMS minimum set of events.
 
-         Using pgaudit PostgreSQL can be configured to audit these 
-         requests. See supplementary content APPENDIX-B for documentation 
-         on installing pgaudit.
+    Using pgaudit PostgreSQL can be configured to audit these requests. See supplementary content APPENDIX-B for documentation on installing pgaudit.
 
-         To ensure that logging is enabled, review supplementary content 
-         APPENDIX-C for instructions on enabling logging.'
+    To ensure that logging is enabled, review supplementary content APPENDIX-C for instructions on enabling logging.'
   end
 
   control 'V-72991' do
-    title 'PostgreSQL must use CMS-approved cryptography to protect 
-    classified sensitive information in accordance with the data owners 
-    requirements.'
-    desc 'Use of weak or untested encryption algorithms undermines the 
-    purposes of utilizing encryption to protect data. The application 
-    must implement cryptographic modules adhering to the higher standards 
-    approved by the federal government since this provides assurance 
-    they have been tested and validated.
+    title 'PostgreSQL must use CMS-approved cryptography to protect classified sensitive information in accordance with the data owners requirements.'
+    desc 'Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to protect data. The application must implement cryptographic modules adhering to the higher standards approved by the federal government since this provides assurance they have been tested and validated.
 
-    It is the responsibility of the data owner to assess the cryptography 
-    requirements in light of applicable federal laws, Executive Orders, 
-    directives, policies, regulations, and standards.'
-    desc 'check', 'If PostgreSQL is not using CMS-approved cryptography 
-    to protect classified sensitive information in accordance with 
-    applicable federal laws, Executive Orders, directives, policies, 
-    regulations, and standards, this is a finding.
+    It is the responsibility of the data owner to assess the cryptography requirements in light of applicable federal laws, Executive Orders, directives, policies, regulations, and standards.'
+    desc 'check', 'If PostgreSQL is not using CMS-approved cryptography to protect classified sensitive information in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards, this is a finding.
 
-    To check if PostgreSQL is configured to use SSL, as the database 
-    administrator (shown here as "postgres"), run the following SQL:
+    To check if PostgreSQL is configured to use SSL, as the database administrator (shown here as "postgres"), run the following SQL:
 
     $ sudo su - postgres
     $ psql -c "SHOW ssl"
 
     If SSL is off, this is a finding.'
-    desc 'fix', 'Note: The following instructions use the PGDATA 
-    environment variable. See supplementary content APPENDIX-F for 
-    instructions on configuring PGDATA.
+    desc 'fix', 'Note: The following instructions use the PGDATA environment variable. See supplementary content APPENDIX-F for instructions on configuring PGDATA.
 
-    To configure PostgreSQL to use SSL, as a database administrator 
-    (shown here as "postgres"), edit postgresql.conf:
+    To configure PostgreSQL to use SSL, as a database administrator (shown here as "postgres"), edit postgresql.conf:
 
     $ sudo su - postgres
     $ vi ${PGDATA?}/postgresql.conf
@@ -964,24 +761,11 @@ include_controls 'pgstigcheck-inspec' do
 
   control "V-72999" do
 
-    title "PostgreSQL must separate user functionality (including user interface
-    services) from database management functionality."
-    desc  "Information system management functionality includes functions necessary to
-    administer databases, network components, workstations, or servers and typically
-    requires privileged user access.
-    The separation of user functionality from information system management
-    functionality is either physical or logical and is accomplished by using different
-    computers, different central processing units, different instances of the operating
-    system, different network addresses, combinations of these methods, or other
-    methods, as appropriate.
-    An example of this type of separation is observed in web administrative interfaces
-    that use separate authentication methods for users of any other information system
-    resources.
-    This may include isolating the administrative interface on a different domain and
-    with additional access controls.
-    If administrative functionality or information regarding PostgreSQL management is
-    presented on an interface available for users, information on DBMS settings may be
-    inadvertently made available to the user."
+    title "PostgreSQL must separate user functionality (including user interface services) from database management functionality."
+    desc  "Information system management functionality includes functions necessary to administer databases, network components, workstations, or servers and typically requires privileged user access.
+    The separation of user functionality from information system management functionality is either physical or logical and is accomplished by using different computers, different central processing units, different instances of the operating system, different network addresses, combinations of these methods, or other methods, as appropriate.
+    An example of this type of separation is observed in web administrative interfaces that use separate authentication methods for users of any other information system resources.
+    This may include isolating the administrative interface on a different domain and with additional access controls. If administrative functionality or information regarding PostgreSQL management is presented on an interface available for users, information on DBMS settings may be inadvertently made available to the user."
 
     impact 0.5
     tag "severity": "medium"
@@ -992,20 +776,15 @@ include_controls 'pgstigcheck-inspec' do
     tag "cci": ["CCI-001082"]
     tag "nist": ["SC-2", "Rev_4"]
 
-    tag "check": "Check PostgreSQL settings and vendor documentation to verify that
-    administrative functionality is separate from user functionality.
-    As the database administrator (shown here as \"postgres\"), list all roles and
-    permissions for the database:
+    tag "check": "Check PostgreSQL settings and vendor documentation to verify that administrative functionality is separate from user functionality.
+    As the database administrator (shown here as \"postgres\"), list all roles and permissions for the database:
     $ sudo su - postgres
     $ psql -c \"\\du\"
     If any non-administrative role has the attribute \"Superuser\", \"Create role\",
     \"Create DB\" or \"Bypass RLS\", this is a finding.
-    If administrator and general user functionality are not separated either physically
-    or logically, this is a finding."
-    tag "fix": "Configure PostgreSQL to separate database administration and general
-    user functionality.
-    Do not grant superuser, create role, create db or bypass rls role attributes to
-    users that do not require it.
+    If administrator and general user functionality are not separated either physically or logically, this is a finding."
+    tag "fix": "Configure PostgreSQL to separate database administration and general user functionality.
+    Do not grant superuser, create role, create db or bypass rls role attributes to users that do not require it.
     To remove privileges, see the following example:
     ALTER ROLE <username> NOSUPERUSER NOCREATEDB NOCREATEROLE NOBYPASSRLS;"
 
@@ -1036,32 +815,17 @@ include_controls 'pgstigcheck-inspec' do
   end
 
   control 'V-73015' do
-    desc 'The CMS standard for authentication is CMS-approved PKI 
-         certificates.
+    desc 'The CMS standard for authentication is CMS-approved PKI certificates.
          
-         Authentication based on User ID and Password may be used only 
-         when it is not possible to employ a PKI certificate, and 
-         requires AO approval.
+    Authentication based on User ID and Password may be used only when it is not possible to employ a PKI certificate, and requires AO approval.
 
-         In such cases, database passwords stored in clear text, using 
-         reversible encryption, or using unsalted hashes would be 
-         vulnerable to unauthorized disclosure. Database passwords must 
-         always be in the form of one-way, salted hashes when stored 
-         internally or externally to PostgreSQL.'
+    In such cases, database passwords stored in clear text, using reversible encryption, or using unsalted hashes would be vulnerable to unauthorized disclosure. Database passwords must always be in the form of one-way, salted hashes when stored internally or externally to PostgreSQL.'
   end
 
   control "V-73017" do
-    title "PostgreSQL must enforce access restrictions associated with changes to the
-    configuration of PostgreSQL or database(s)."
-    desc  "Failure to provide logical access restrictions associated with changes to
-    configuration may have significant effects on the overall security of the system.
-    When dealing with access restrictions pertaining to change control, it should be
-    noted that any changes to the hardware, software, and/or firmware components of the
-    information system can potentially have significant effects on the overall security
-    of the system.
-    Accordingly, only qualified and authorized individuals should be allowed to obtain
-    access to system components for the purposes of initiating changes, including
-    upgrades and modifications."
+    title "PostgreSQL must enforce access restrictions associated with changes to the configuration of PostgreSQL or database(s)."
+    desc  "Failure to provide logical access restrictions associated with changes to configuration may have significant effects on the overall security of the system. When dealing with access restrictions pertaining to change control, it should be noted that any changes to the hardware, software, and/or firmware components of the information system can potentially have significant effects on the overall security of the system.
+    Accordingly, only qualified and authorized individuals should be allowed to obtain access to system components for the purposes of initiating changes, including upgrades and modifications."
     impact 0.5
     tag "severity": "medium"
     tag "gtitle": "SRG-APP-000380-DB-000360"
@@ -1173,111 +937,66 @@ include_controls 'pgstigcheck-inspec' do
   end
 
   control 'V-73023' do
-    title 'The system must provide a warning to appropriate support 
-          staff when allocated audit record storage volume reaches 80% 
-          of maximum audit record storage capacity.'
-    desc 'Organizations are required to use a central log management system, 
-         so, under normal conditions, the audit space allocated to 
-         PostgreSQL on its own server will not be an issue. However, 
-         space will still be required on PostgreSQL server for audit 
-         records in transit, and, under abnormal conditions, this could 
-         fill up. Since a requirement exists to halt processing upon 
-         audit failure, a service outage would result.
+    title 'The system must provide a warning to appropriate support staff when allocated audit record storage volume reaches 80% of maximum audit record storage capacity.'
+    desc 'Organizations are required to use a central log management system, so, under normal conditions, the audit space allocated to PostgreSQL on its own server will not be an issue. However, space will still be required on PostgreSQL server for audit records in transit, and, under abnormal conditions, this could fill up. Since a requirement exists to halt processing upon audit failure, a service outage would result.
 
-         If support personnel are not notified immediately upon storage 
-         volume utilization reaching 80%, they are unable to plan for   
-         storage capacity expansion. 
+    If support personnel are not notified immediately upon storage volume utilization reaching 80%, they are unable to plan for storage capacity expansion.
 
-         The appropriate support staff include, at a minimum, the ISSO 
-         and the DBA/SA.'
+    The appropriate support staff include, at a minimum, the ISSO and the DBA/SA.'
     desc 'check', 'Review system configuration.
 
-         If no script/tool is monitoring the partition for the PostgreSQL 
-         log directories, this is a finding.
+    If no script/tool is monitoring the partition for the PostgreSQL log directories, this is a finding.
 
-         If appropriate support staff are not notified immediately upon 
-         storage volume utilization reaching 80%, this is a finding.'
+    If appropriate support staff are not notified immediately upon storage volume utilization reaching 80%, this is a finding.'
 
-    desc 'fix', 'Configure the system to notify appropriate support 
-         staff immediately upon storage volume utilization reaching 80%.
+    desc 'fix', 'Configure the system to notify appropriate support staff immediately upon storage volume utilization reaching 80%.
 
-         PostgreSQL does not monitor storage, however, it is possible to 
-         monitor storage with a script.
+    PostgreSQL does not monitor storage, however, it is possible to monitor storage with a script.
 
-         ##### Example Monitoring Script
+    ##### Example Monitoring Script
 
-         #!/bin/bash
+    #!/bin/bash
 
-         PGDATA=/var/lib/psql/9.5/data
-         CURRENT=$(df ${PGDATA?} | grep / | awk "{ print $5}" 
-                                 | sed "s/%//g")
-         THRESHOLD=80
+    PGDATA=/var/lib/psql/9.5/data
+    CURRENT=$(df ${PGDATA?} | grep / | awk "{ print $5}" | sed "s/%//g")
+    THRESHOLD=80
 
-         if [ "$CURRENT" -gt "$THRESHOLD" ] ; then
-         mail -s "Disk Space Alert" mail@support.com << EOF
-         The data directory volume is almost full. Used: $CURRENT
-         %EOF
-         fi
+    if [ "$CURRENT" -gt "$THRESHOLD" ] ; then
+    mail -s "Disk Space Alert" mail@support.com << EOF
+    The data directory volume is almost full. Used: $CURRENT
+    %EOF
+    fi
 
-         Schedule this script in cron to run around the clock.'
+    Schedule this script in cron to run around the clock.'
   end
 
   control 'V-73027' do
-    desc 'The CMS standard for authentication of an interactive user 
-         is the presentation of a Personal Identity Verification (PIV) 
-         Card or other physical token bearing a valid, current, 
-         CMS-issued Public Key Infrastructure (PKI) certificate, coupled 
-         with a Personal Identification Number (PIN) to be entered by 
-         the user at the beginning of each session and whenever 
-         reauthentication is required.
+    desc 'The CMS standard for authentication of an interactive user is the presentation of a Personal Identity Verification (PIV) Card or other physical token bearing a valid, current, CMS-issued Public Key Infrastructure (PKI) certificate, coupled with a Personal Identification Number (PIN) to be entered by the user at the beginning of each session and whenever reauthentication is required.
 
-         Without reauthentication, users may access resources or perform 
-         tasks for which they do not have authorization.
+    Without reauthentication, users may access resources or perform tasks for which they do not have authorization.
 
-         When applications provide the capability to change security 
-         roles or escalate the functional capability of the application, 
-         it is critical the user re-authenticate.
+    When applications provide the capability to change security roles or escalate the functional capability of the application, it is critical the user re-authenticate.
 
-         In addition to the reauthentication requirements associated with 
-         session locks, organizations may require reauthentication of 
-         individuals and/or devices in other situations, including (but 
-         not limited to) the following circumstances:
+    In addition to the reauthentication requirements associated with session locks, organizations may require reauthentication of individuals and/or devices in other situations, including (but not limited to) the following circumstances:
 
-         (i) When authenticators change;
-         (ii) When roles change;
-         (iii) When security categorized information systems change;
-         (iv) When the execution of privileged functions occurs;
-         (v) After a fixed period of time; or
-         (vi) Periodically.
+    (i) When authenticators change;
+    (ii) When roles change;
+    (iii) When security categorized information systems change;
+    (iv) When the execution of privileged functions occurs;
+    (v) After a fixed period of time; or
+    (vi) Periodically.
 
-         Within CMS, the minimum circumstances requiring reauthentication 
-         are privilege escalation and role changes.'
+    Within CMS, the minimum circumstances requiring reauthentication are privilege escalation and role changes.'
   end
 
   control 'V-73029' do
-    desc 'The CMS standard for authentication is CMS-approved PKI 
-         certificates. PKI certificate-based authentication is performed 
-         by requiring the certificate holder to cryptographically prove 
-         possession of the corresponding private key.
+    desc 'The CMS standard for authentication is CMS-approved PKI certificates. PKI certificate-based authentication is performed by requiring the certificate holder to cryptographically prove possession of the corresponding private key.
 
-         If the private key is stolen, an attacker can use the private 
-         key(s) to impersonate the certificate holder. In cases where 
-         PostgreSQL-stored private keys are used to authenticate PostgreSQL 
-         to the system, clients, loss of the corresponding private keys 
-         would allow an attacker to successfully perform undetected 
-         man-in-the-middle attacks against PostgreSQL system and its    
-         clients.
+    If the private key is stolen, an attacker can use the private key(s) to impersonate the certificate holder. In cases where PostgreSQL-stored private keys are used to authenticate PostgreSQL to the system, clients, loss of the corresponding private keys would allow an attacker to successfully perform undetected man-in-the-middle attacks against PostgreSQL system and its clients.
 
-         Both the holder of a digital certificate and the issuing authority 
-         must take careful measures to protect the corresponding private 
-         key. Private keys should always be generated and protected in 
-         FIPS 140-2 validated cryptographic modules.
+    Both the holder of a digital certificate and the issuing authority must take careful measures to protect the corresponding private key. Private keys should always be generated and protected in FIPS 140-2 validated cryptographic modules.
 
-         All access to the private key(s) of PostgreSQL must be restricted 
-         to authorized and authenticated users. If unauthorized users have 
-         access to one or more of PostgreSQL\'s private keys, an attacker 
-         could gain access to the key(s) and use them to impersonate the 
-         database on the network or otherwise perform unauthorized actions.'
+    All access to the private key(s) of PostgreSQL must be restricted to authorized and authenticated users. If unauthorized users have access to one or more of PostgreSQL\'s private keys, an attacker could gain access to the key(s) and use them to impersonate the database on the network or otherwise perform unauthorized actions.'
 
     describe file(attribute('pg_conf_file')) do
       it { should be_file }
@@ -1298,65 +1017,42 @@ include_controls 'pgstigcheck-inspec' do
 end
 
   control 'V-73031' do
-    title 'PostgreSQL must only accept end entity certificates issued by 
-          CMS PKI or CMS-approved PKI Certification Authorities (CAs) for 
-          the establishment of all encrypted sessions.'
+    title 'PostgreSQL must only accept end entity certificates issued by CMS PKI or CMS-approved PKI Certification Authorities (CAs) for the establishment of all encrypted sessions.'
     
-    desc 'Only CMS-approved external PKIs have been evaluated to ensure 
-         that they have security controls and identity vetting procedures 
-         in place which are sufficient for CMS systems to rely on the 
-         identity asserted in the certificate. PKIs lacking sufficient 
-         security controls and identity vetting procedures risk being 
-         compromised and issuing certificates that enable adversaries to 
-         impersonate legitimate users. 
+    desc 'Only CMS-approved external PKIs have been evaluated to ensure that they have security controls and identity vetting procedures in place which are sufficient for CMS systems to rely on the identity asserted in the certificate. PKIs lacking sufficient security controls and identity vetting procedures risk being compromised and issuing certificates that enable adversaries to impersonate legitimate users. 
 
-         The authoritative list of CMS-approved PKIs is published at 
-         http://iase.disa.mil/pki-pke/interoperability.
+    The authoritative list of CMS-approved PKIs is published at 
+    http://iase.disa.mil/pki-pke/interoperability.
 
-         This requirement focuses on communications protection for 
-         PostgreSQL session rather than for the network packet.'
+    This requirement focuses on communications protection for PostgreSQL session rather than for the network packet.'
 
-    desc 'fix', 'Revoke trust in any certificates not issued by a 
-         CMS-approved certificate authority.
+    desc 'fix', 'Revoke trust in any certificates not issued by a CMS-approved certificate authority.
 
-         Configure PostgreSQL to accept only CMS and CMS-approved PKI 
-         end-entity certificates.
+    Configure PostgreSQL to accept only CMS and CMS-approved PKI end-entity certificates.
 
-         To configure PostgreSQL to accept approved CA\'s, see the 
-         official PostgreSQL documentation: 
-         http://www.postgresql.org/docs/current/static/ssl-tcp.html
+    To configure PostgreSQL to accept approved CA\'s, see the official PostgreSQL documentation: 
+    http://www.postgresql.org/docs/current/static/ssl-tcp.html
 
-         For more information on configuring PostgreSQL to use SSL, 
-         see supplementary content APPENDIX-G.'
+    For more information on configuring PostgreSQL to use SSL, see supplementary content APPENDIX-G.'
   end
 
   control 'V-73037' do
-    tag "cci": ['CCI-001184']
-    tag "nist": ['SC-23', 'Rev_4']
+    impact 0.0
+    desc "caveat", "Not applicable for this CMS ARS 3.1 overlay, since the related security control is not included in CMS ARS 3.1"
    end
 
   control 'V-73045' do
-    tag "cci": ['CCI-001848']
-    tag "nist": ['AU-4', 'Rev_4']
+    impact 0.0
+    desc "caveat", "Not applicable for this CMS ARS 3.1 overlay, since the related security control is not included in CMS ARS 3.1"
   end
 
   control "V-73049" do
-    title "PostgreSQL must uniquely identify and authenticate organizational users (or
-    processes acting on behalf of organizational users)."
-    desc  "To assure accountability and prevent unauthenticated access, organizational
-    users must be identified and authenticated to prevent potential misuse and
-    compromise of the system.
-    Organizational users include organizational employees or individuals the
-    organization deems to have cmpuivalent status of employees (e.g., contractors).
-    Organizational users (and any processes acting on behalf of users) must be uniquely
-    identified and authenticated for all accesses, except the following:
-    (i) Accesses explicitly identified and documented by the organization. Organizations
-    document specific user actions that can be performed on the information system
-    without identification or authentication; and
-    (ii) Accesses that occur through authorized use of group authenticators without
-    individual authentication. Organizations may rcmpuire unique identification of
-    individuals using shared accounts, for detailed accountability of individual
-    activity."
+    title "PostgreSQL must uniquely identify and authenticate organizational users (or processes acting on behalf of organizational users)."
+    desc  "To assure accountability and prevent unauthenticated access, organizational users must be identified and authenticated to prevent potential misuse and compromise of the system.
+    Organizational users include organizational employees or individuals the organization deems to have cmpuivalent status of employees (e.g., contractors).
+    Organizational users (and any processes acting on behalf of users) must be uniquely identified and authenticated for all accesses, except the following:
+    (i) Accesses explicitly identified and documented by the organization. Organizations document specific user actions that can be performed on the information system without identification or authentication; and
+    (ii) Accesses that occur through authorized use of group authenticators without individual authentication. Organizations may rcmpuire unique identification of individuals using shared accounts, for detailed accountability of individual activity."
     impact 0.5
     tag "severity": "medium"
     tag "gtitle": "SRG-APP-000148-DB-000103"
@@ -1365,33 +1061,26 @@ end
     tag "stig_id": "PGS9-00-011500"
     tag "cci": ["CCI-000764"]
     tag "nist": ["IA-2", "Rev_4"]
-    tag "check": "Review PostgreSQL settings to determine whether organizational users
-    are uniquely identified and authenticated when logging on/connecting to the system.
+    tag "check": "Review PostgreSQL settings to determine whether organizational users are uniquely identified and authenticated when logging on/connecting to the system.
     To list all roles in the database, as the database administrator (shown here as
     \"postgres\"), run the following SQL:
     $ sudo su - postgres
     $ psql -c \"\\du\"
-    If organizational users are not uniquely identified and authenticated, this is a
-    finding.
-    Next, as the database administrator (shown here as \"postgres\"), verify the current
-    pg_hba.conf authentication settings:
+    If organizational users are not uniquely identified and authenticated, this is a finding.
+    Next, as the database administrator (shown here as \"postgres\"), verify the current pg_hba.conf authentication settings:
     $ sudo su - postgres
     $ cat ${PGDATA?}/pg_hba.conf
     If every role does not have unique authentication rcmpuirements, this is a finding.
-    If accounts are determined to be shared, determine if individuals are first
-    individually authenticated. If individuals are not individually authenticated before
-    using the shared account, this is a finding."
+    If accounts are determined to be shared, determine if individuals are first individually authenticated. If individuals are not individually authenticated before using the shared account, this is a finding."
 
     tag "fix": "Note: The following instructions use the PGDATA environment variable.
     See supplementary content APPENDIX-F for instructions on configuring PGDATA.
-    Configure PostgreSQL settings to uniquely identify and authenticate all
-    organizational users who log on/connect to the system.
+    Configure PostgreSQL settings to uniquely identify and authenticate all organizational users who log on/connect to the system.
     To create roles, use the following SQL:
     CREATE ROLE <role_name> [OPTIONS]
     For more information on CREATE ROLE, see the official documentation:
     https://www.postgresql.org/docs/current/static/sql-createrole.html
-    For each role created, the database administrator can specify database
-    authentication by editing pg_hba.conf:
+    For each role created, the database administrator can specify database authentication by editing pg_hba.conf:
     $ sudo su - postgres
     $ vi ${PGDATA?}/pg_hba.conf
     An example pg_hba entry looks like this:
@@ -1421,12 +1110,9 @@ end
   end
 
   control 'V-73055' do
-    desc 'The CMS standard for authentication is CMS-approved PKI 
-         certificates. Once a PKI certificate has been validated, it 
-         must be mapped to PostgreSQL user account for the authenticated 
-         identity to be meaningful to PostgreSQL and useful for 
-         authorization decisions.'
+    desc 'The CMS standard for authentication is CMS-approved PKI certificates. Once a PKI certificate has been validated, it must be mapped to PostgreSQL user account for the authenticated identity to be meaningful to PostgreSQL and useful for authorization decisions.'
   end
+
   control 'V-73061' do
     describe file(attribute('pg_conf_file')) do
       it { should be_file }
@@ -1441,9 +1127,10 @@ end
     log_destination = log_destination_query.output
 
     if log_destination =~ /stderr/i
-       describe sql.query('SHOW log_file_mode;', [PG_DB]) do
+      describe sql.query('SHOW log_file_mode;', [PG_DB]) do
         its('output') { should eq 0600}
-    end
+      end
     end
   end
+
 end
