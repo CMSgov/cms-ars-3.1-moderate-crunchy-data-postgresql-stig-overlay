@@ -10,12 +10,41 @@ __For the best security of the runner, always install on the runner the _latest 
 
 Latest versions and installation options are available at the [InSpec](http://inspec.io/) site.
 
-Git is required to download the latest InSpec profiles using the instructions below. Git can be downloaded from the [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) site. 
+## Inputs: Tailoring your scan to Your Environment
 
-## Tailoring to Your Environment
 The following inputs must be configured in an inputs ".yml" file for the profile to run correctly for your specific environment. More information about InSpec inputs can be found in the [InSpec Profile Documentation](https://www.inspec.io/docs/reference/profiles/).
 
+#### *Note* Windows and Linux InSpec Runner
+
+There are current issues with how the profiles run when using a windows or linux runner. We have accounted for this in the profile with the `windows_runner` input - which we *default* to `false` assuming a Linux based InSpec runner.
+
+If you are using a *Windows* based inspec installation, please set the `windows_runner` input to `true` either via your `inspec.yml` file or via the cli flag via, `--input windows_runner=true`
+
+### Example Inputs You Can Use
+
 ```
+# Windows or Linux Runner (default value = false)
+windows_runner: false
+
+
+
+# Description: 'Postgres database admin user (e.g., 'root').'
+pg_dba: 'root'
+
+# Description: 'Postgres database admin password ('password').'
+pg_dba_password: 'password'
+
+# Description: 'Postgres database hostname'
+pg_host: ''
+
+# Description: 'Postgres database name ('test')'
+pg_db: 'test'
+
+# Description: 'Postgres database port'
+pg_port: '5432'
+
+
+
 # Description: 'Postgres OS user (e.g., 'postgres').'
 pg_owner: ''
 
@@ -25,26 +54,11 @@ pg_group: ''
 # Description: 'Postgres OS user password'
 pg_owner_password: ''
 
-# Description: 'Postgres database admin user (e.g., 'root').'
-pg_dba: ''
-
-# Description: 'Postgres database admin password ('password').'
-pg_dba_password: ''
-
 # Description: 'Postgres normal user'
 pg_user: ''
 
 # Description: 'Postgres normal user password'
 pg_user_password: ''
-
-# Description: 'Postgres database hostname'
-pg_host: ''
-
-# Description: 'Postgres database port'
-pg_port: '5432'
-
-# Description: 'Postgres database name ('test')'
-pg_db: 'test'
 
 # Description: 'Postgres database table name'
 pg_table: ''
@@ -75,6 +89,12 @@ pg_ident_conf_file: ''
 
 # Description: 'List of shared directories (e.g., pg_shared_dirs: ['/usr/pgsql-9.5', '/usr/pgsql-9.5/bin', '/usr/pgsql-9.5/lib', '/usr/pgsql-9.5/share']).'
 pg_shared_dirs: []
+
+# Description: 'The location of the postgres log files on the system (e.g., '/var/lib/pgsql/9.5/data/pg_log')
+pg_log_dir: ''
+
+# Description: 'The location of the postgres audit log files on the system (e.g., '/var/lib/pgsql/9.5/data/pg_log')
+pg_audit_log_dir: ''
 
 # Description: 'Database configuration mode (e.g., 0600)'
 pg_conf_mode: '0600'
@@ -115,23 +135,23 @@ pg_timezone: ''
 
 ## Running This Overlay Directly from Github
 
-Against a remote target using ssh with escalated privileges (i.e., InSpec installed on a separate runner host)
+Against a remote target using ssh as the *postgres* user (i.e., InSpec installed on a separate runner host)
 ```bash
 # How to run 
-inspec exec https://github.com/CMSgov/cms-ars-3.1-moderate-crunchy-data-postgresql-9-stig-overlay/archive/master.tar.gz -t ssh://TARGET_USERNAME:TARGET_PASSWORD@TARGET_IP:TARGET_PORT --sudo --sudo-password=<SUDO_PASSWORD_IF_REQUIRED> --input-file <path_to_your_input_file/name_of_your_input_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json> 
+inspec exec https://github.com/CMSgov/cms-ars-3.1-moderate-crunchy-data-postgresql-9-stig-overlay/archive/master.tar.gz -t ssh://postgres:TARGET_PASSWORD@TARGET_IP:TARGET_PORT --input-file <path_to_your_input_file/name_of_your_input_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json> 
 ```
 
-Against a remote target using a pem key with escalated privileges (i.e., InSpec installed on a separate runner host)
+Against a remote target using a pem key as the *postgres* user (i.e., InSpec installed on a separate runner host)
 ```bash
 # How to run 
-inspec exec https://github.com/CMSgov/cms-ars-3.1-moderate-crunchy-data-postgresql-9-stig-overlay/archive/master.tar.gz -t ssh://TARGET_USERNAME@TARGET_IP:TARGET_PORT --sudo -i <your_PEM_KEY> --input-file <path_to_your_input_file/name_of_your_input_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>  
+inspec exec https://github.com/CMSgov/cms-ars-3.1-moderate-crunchy-data-postgresql-9-stig-overlay/archive/master.tar.gz -t ssh://postgres@TARGET_IP:TARGET_PORT -i <postgres_PEM_KEY> --input-file <path_to_your_input_file/name_of_your_input_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>  
 ```
 
-Against a local linux host with escalated privileges (i.e., InSpec installed on the target)
+Against a local linux host logged in as the *postgres* user (i.e., InSpec installed on the target)
 
 ```bash
 # How to run
-sudo inspec exec https://github.com/CMSgov/cms-ars-3.1-moderate-crunchy-data-postgresql-9-stig-overlay/archive/master.tar.gz --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
+inspec exec https://github.com/CMSgov/cms-ars-3.1-moderate-crunchy-data-postgresql-9-stig-overlay/archive/master.tar.gz --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
 ```
 
 ### Different Run Options
