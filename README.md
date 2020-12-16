@@ -72,31 +72,48 @@ login_host: ''
 # Description: 'Database version'
 pg_version: '9.5'
 
-# Description: 'Data directory for database (e.g., '/var/lib/pgsql/9.5/data')'
+# Description: 'Data directory for database'
+# e.g., Default of '/var/lib/pgsql/9.5/data'
+# or for v9.2: '/var/lib/pgsql/data'
 pg_data_dir: ''
 
-# Description: 'Configuration file for the database ('/var/lib/pgsql/9.5/data/postgresql.conf').'
+# Description: 'Configuration file for the database' 
+# e.g., Default of '/var/lib/pgsql/9.5/data/postgresql.conf'
+# or for v9.2: '/var/lib/pgsql/data/postgresql.conf'
 pg_conf_file: ''
 
-# Description: 'User defined configuration file for the database (e.g., '/var/lib/pgsql/9.5/data/stig-postgresql.conf')'
+# Description: 'User defined configuration file for the database'
+# e.g., Default of '/var/lib/pgsql/9.5/data/stig-postgresql.conf'
+# or for v9.2: '/var/lib/pgsql/data/stig-postgresql.conf'
 pg_user_defined_conf: ''
 
-# Description: 'Configuration file to enable client authentication (e.g., '/var/lib/pgsql/9.5/data/pg_hba.conf')'
+# Description: 'Configuration file to enable client authentication'
+# e.g., Default of '/var/lib/pgsql/9.5/data/pg_hba.conf'
+# or for v9.2: '/var/lib/pgsql/data/pg_hba.conf'
 pg_hba_conf_file: ''
 
-# Description: 'Configuration file that maps operating system usernames and database usernames (e.g., '/var/lib/pgsql/9.5/data/pg_ident.conf').'
+# Description: 'Configuration file that maps operating system usernames and database usernames'
+# e.g., Default of '/var/lib/pgsql/9.5/data/pg_ident.conf'
+# or for v9.2: '/var/lib/pgsql/data/pg_ident.conf'
 pg_ident_conf_file: ''
 
-# Description: 'List of shared directories (e.g., pg_shared_dirs: ['/usr/pgsql-9.5', '/usr/pgsql-9.5/bin', '/usr/pgsql-9.5/lib', '/usr/pgsql-9.5/share']).'
+# Description: 'List of shared directories'
+# e.g., Default of pg_shared_dirs: ['/usr/pgsql-9.5', '/usr/pgsql-9.5/bin', '/usr/pgsql-9.5/lib', '/usr/pgsql-9.5/share']
+# or for v9.2: ['/usr/', '/usr/bin', '/usr/lib', '/usr/share']
 pg_shared_dirs: []
 
-# Description: 'The location of the postgres log files on the system (e.g., '/var/lib/pgsql/9.5/data/pg_log')'
+# Description: 'The location of the postgres log files on the system'
+# e.g., Default of '/var/lib/pgsql/9.5/data/pg_log'
+# or for v9.2: '/var/lib/pgsql/data/pg_log'
 pg_log_dir: ''
 
-# Description: 'The location of the postgres audit log files on the system (e.g., '/var/lib/pgsql/9.5/data/pg_log')'
+# Description: 'The location of the postgres audit log files on the system'
+# e.g., Default of '/var/lib/pgsql/9.5/data/pg_log'
+# or for v9.2: '/var/lib/pgsql/data/pg_log'
 pg_audit_log_dir: ''
 
-# Description: 'V-73039 uses this location of the pgaudit installation on the system (e.g., /usr/pgsql-9.5/share/contrib/pgaudit)'
+# Description: 'V-73039 uses this location of the pgaudit installation on the system'
+# e.g., Default of '/usr/pgsql-9.5/share/contrib/pgaudit'
 pgaudit_installation: ''
 
 # Description: 'Database configuration mode (e.g., 0600)'
