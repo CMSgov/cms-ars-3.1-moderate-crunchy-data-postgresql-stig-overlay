@@ -2,7 +2,7 @@
 
 InSpec profile overlay to validate the secure configuration of Crunchy Data PostgreSQL 9 against [DISA's](https://iase.disa.mil/stigs/Pages/index.aspx) Crunchy Data PostgreSQL 9.x STIG Version 1 Release 4 tailored for [CMS ARS 3.1](https://www.cms.gov/Research-Statistics-Data-and-Systems/CMS-Information-Technology/InformationSecurity/Info-Security-Library-Items/ARS-31-Publication.html) for CMS systems categories as Moderate.
 
-#### Container-Ready: Profile updated to adapt checks when the running against a containerized instance of PostgreSQL, based on reference container: (docker pull httpd) at https://hub.docker.com/_/postgres
+#### Container-Ready: Profile updated to adapt checks when the running against a containerized instance of PostgreSQL, based on reference container: (docker pull registry1.dso.mil/ironbank/opensource/postgres/postgresql96:9.6.23)
 
 ## Getting Started
 
