@@ -1,6 +1,6 @@
-# cms-ars-3.1-moderate-crunchy-data-postgresql-9-stig-overlay
+# cms-ars-3.1-moderate-crunchy-data-postgresql-stig-overlay
 
-InSpec profile overlay to validate the secure configuration of Crunchy Data PostgreSQL 9 against [DISA's](https://iase.disa.mil/stigs/Pages/index.aspx) Crunchy Data PostgreSQL 9.x STIG Version 1 Release 4 tailored for [CMS ARS 3.1](https://www.cms.gov/Research-Statistics-Data-and-Systems/CMS-Information-Technology/InformationSecurity/Info-Security-Library-Items/ARS-31-Publication.html) for CMS systems categories as Moderate.
+InSpec profile overlay to validate the secure configuration of Crunchy Data PostgreSQL against [DISA's](https://iase.disa.mil/stigs/Pages/index.aspx) Crunchy Data PostgreSQL STIG Version 1, Release 1 (Applies to database versions 10, 11, 12 & 13) tailored for [CMS ARS 3.1](https://www.cms.gov/Research-Statistics-Data-and-Systems/CMS-Information-Technology/InformationSecurity/Info-Security-Library-Items/ARS-31-Publication.html) for CMS systems categories as Moderate.
 
 #### Container-Ready: Profile updated to adapt checks when the running against a containerized instance of PostgreSQL, based on reference container: (docker pull registry1.dso.mil/ironbank/opensource/postgres/postgresql96:9.6.23)
 
@@ -23,33 +23,33 @@ If you are using a *Windows* based inspec installation, please set the `windows_
 ### Example Inputs You Can Use
 
 ```
-# Windows or Linux Runner (default value = false)
+# Changes checks depending on if using a Windows or Linux-based InSpec Runner (default value = false)
 windows_runner: false
 
 
+# These five inputs are used by any tests needing to query the database:
+# Description: 'Postgres database admin user (e.g., 'postgres').'
+pg_dba: 'postgres'
 
-# Description: 'Postgres database admin user (e.g., 'root').'
-pg_dba: 'root'
-
-# Description: 'Postgres database admin password ('password').'
-pg_dba_password: 'password'
+# Description: 'Postgres database admin password.'
+pg_dba_password: ''
 
 # Description: 'Postgres database hostname'
 pg_host: ''
 
-# Description: 'Postgres database name ('test')'
-pg_db: 'test'
+# Description: 'Postgres database name (e.g., 'postgres')'
+pg_db: 'postgres'
 
-# Description: 'Postgres database port'
+# Description: 'Postgres database port (e.g., '5432')
 pg_port: '5432'
 
 
 
 # Description: 'Postgres OS user (e.g., 'postgres').'
-pg_owner: ''
+pg_owner: 'postgres'
 
 # Description: 'Postgres OS group (e.g., 'postgres').'
-pg_group: ''
+pg_group: 'postgres'
 
 # Description: 'Postgres OS user password'
 pg_owner_password: ''
@@ -70,95 +70,92 @@ login_user: ''
 login_host: ''
 
 # Description: 'Database version'
-pg_version: '9.5'
+# Change "12.x" to your version (This STIG applies to versions 10.x, 11.x, 12.x, and 13.x)
+pg_version: '12.9'
 
 # Description: 'Data directory for database'
-# e.g., Default of '/var/lib/pgsql/9.5/data'
-# or for v9.2: '/var/lib/pgsql/data'
+# e.g., Default for version 12: '/var/lib/pgsql/12/data'
 pg_data_dir: ''
 
 # Description: 'Configuration file for the database' 
-# e.g., Default of '/var/lib/pgsql/9.5/data/postgresql.conf'
-# or for v9.2: '/var/lib/pgsql/data/postgresql.conf'
+# e.g., Default for version 12: '/var/lib/pgsql/12/data/postgresql.conf'
 pg_conf_file: ''
 
 # Description: 'User defined configuration file for the database'
-# e.g., Default of '/var/lib/pgsql/9.5/data/stig-postgresql.conf'
-# or for v9.2: '/var/lib/pgsql/data/stig-postgresql.conf'
+# e.g., Default for version 12: '/var/lib/pgsql/12/data/stig-postgresql.conf'
 pg_user_defined_conf: ''
 
 # Description: 'Configuration file to enable client authentication'
-# e.g., Default of '/var/lib/pgsql/9.5/data/pg_hba.conf'
-# or for v9.2: '/var/lib/pgsql/data/pg_hba.conf'
+# e.g., Default for version 12: '/var/lib/pgsql/12/data/pg_hba.conf'
 pg_hba_conf_file: ''
 
 # Description: 'Configuration file that maps operating system usernames and database usernames'
-# e.g., Default of '/var/lib/pgsql/9.5/data/pg_ident.conf'
-# or for v9.2: '/var/lib/pgsql/data/pg_ident.conf'
+# e.g., Default for version 12: '/var/lib/pgsql/12/data/pg_ident.conf'
 pg_ident_conf_file: ''
 
-# Description: 'List of shared directories'
-# e.g., Default of pg_shared_dirs: ['/usr/pgsql-9.5', '/usr/pgsql-9.5/bin', '/usr/pgsql-9.5/lib', '/usr/pgsql-9.5/share']
-# or for v9.2: ['/usr/', '/usr/bin', '/usr/lib', '/usr/share']
-pg_shared_dirs: []
+# Description: 'V-233517 uses this input to check permissions of shared directories'
+# e.g., Default for version 12: ['/usr/pgsql-12', '/usr/pgsql-12/bin', '/usr/pgsql-12/include', '/usr/pgsql-12/lib', '/usr/pgsql-12/share']
+# Change "12" to your version (This STIG applies to versions 10, 11, 12, and 13)
+pg_shared_dirs: ['/usr/pgsql-12', '/usr/pgsql-12/bin', '/usr/pgsql-12/include', '/usr/pgsql-12/lib', '/usr/pgsql-12/share']
 
 # Description: 'The location of the postgres log files on the system'
-# e.g., Default of '/var/lib/pgsql/9.5/data/pg_log'
-# or for v9.2: '/var/lib/pgsql/data/pg_log'
-pg_log_dir: ''
+# e.g., Default for version 12: '/var/lib/pgsql/12/data/log'
+# Change "12" to your version (This STIG applies to versions 10, 11, 12, and 13)
+pg_log_dir: '/var/lib/pgsql/12/data/log'
 
 # Description: 'The location of the postgres audit log files on the system'
-# e.g., Default of '/var/lib/pgsql/9.5/data/pg_log'
-# or for v9.2: '/var/lib/pgsql/data/pg_log'
-pg_audit_log_dir: ''
+# e.g., Default for version 12: '/var/lib/pgsql/12/data/log'
+# Change "12" to your version (This STIG applies to versions 10, 11, 12, and 13)
+pg_audit_log_dir: '/var/lib/pgsql/12/data/log'
 
-# Description: 'V-73039 uses this location of the pgaudit installation on the system'
-# e.g., Default of '/usr/pgsql-9.5/share/contrib/pgaudit'
-pgaudit_installation: ''
+# Description: 'V-233607 uses this location of the pgaudit installation on the system'
+# e.g., Default for version 12: '/usr/pgsql-12/share/contrib/pgaudit'
+# Change "12" to your version (This STIG applies to versions 10, 11, 12, and 13)
+pgaudit_installation: '/usr/pgsql-12/share/contrib/pgaudit'
 
 # Description: 'Database configuration mode (e.g., 0600)'
 pg_conf_mode: '0600'
 
 # Description: 'Postgres ssl setting (e.g., 'on').'
-pg_ssl: ''
+pg_ssl: 'on'
 
 # Description: 'Postgres log destination (e.g., 'syslog').'
-pg_log_dest: ''
+pg_log_dest: 'syslog'
 
 # Description: 'Postgres syslog facility (e.g., ['local0']).'
-pg_syslog_facility: []
+pg_syslog_facility: ['local0']
 
 # Description: 'Postgres syslog owner (e.g., 'postgres').'
-pg_syslog_owner: ''
+pg_syslog_owner: 'postgres'
 
 # Description: 'Postgres audit log items (e.g., ['ddl','role','read','write']).'
-pgaudit_log_items: []
+pgaudit_log_items: ['ddl','role','read','write']
 
 # Description: 'Postgres audit log line items (e.g. ['%m','%u','%c']).'
-pgaudit_log_line_items: []
+pgaudit_log_line_items: ['%m','%u','%c']
 
 # Description: 'Postgres super users (e.g., ['postgres']).'
-pg_superusers: []
+pg_superusers: ['postgres']
 
 # Description: 'Postgres users'
 pg_users: []
 
-# Description: 'Postgres replicas (e.g. ['192.168.1.3/32']).'
+# Description: 'V-233520, V-233612 use this list of Postgres replicas from pg_hba.conf settings (e.g. ['127.0.0.1/32']).'
 pg_replicas: []
 
 # Description: 'Postgres max number of connections allowed (e.g., 100).'
-pg_max_connections: 0
+pg_max_connections: 100
 
 # Description: 'Postgres timezone (e.g., 'UTC').'
-pg_timezone: ''
+pg_timezone: 'UTC'
 
-# Description: 'V-72849, V-72859, V-73049 uses this list of approved authentication methods (e.g., per STIG: ['gss', 'sspi', 'ldap'] ).'
+# Description: 'V-233515, V-233520, V-233612 use this list of approved authentication methods (e.g., per STIG: ['gss', 'sspi', 'ldap'] ).'
 approved_auth_methods: []
 
-# Description: 'V-73011 uses this list of approved postgres-related packages (e.g., postgresql-server.x86_64, postgresql-odbc.x86_64).'
+# Description: 'V-233594 uses this list of approved postgres-related packages (e.g., postgresql-server.x86_64, postgresql-odbc.x86_64).'
 approved_packages: []
 
-# Description: 'V-73007, V-73009 uses this list of approved database extensions (e.g., ['plpgsql']).'
+# Description: 'V-233592, V-233593 use this list of approved database extensions (e.g., ['plpgsql']).'
 approved_ext: []
 
 ```
@@ -167,23 +164,23 @@ approved_ext: []
 
 Against a remote target using ssh as the *postgres* user (i.e., InSpec installed on a separate runner host)
 ```bash
-inspec exec https://github.com/CMSgov/cms-ars-3.1-moderate-crunchy-data-postgresql-9-stig-overlay/archive/master.tar.gz -t ssh://postgres:TARGET_PASSWORD@TARGET_IP:TARGET_PORT --input-file <path_to_your_input_file/name_of_your_input_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json> 
+inspec exec https://github.com/CMSgov/cms-ars-3.1-moderate-crunchy-data-postgresql-stig-overlay/archive/master.tar.gz -t ssh://postgres:TARGET_PASSWORD@TARGET_IP:TARGET_PORT --input-file <path_to_your_input_file/name_of_your_input_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json> 
 ```
 
 Against a remote target using a pem key as the *postgres* user (i.e., InSpec installed on a separate runner host)
 ```bash
-inspec exec https://github.com/CMSgov/cms-ars-3.1-moderate-crunchy-data-postgresql-9-stig-overlay/archive/master.tar.gz -t ssh://postgres@TARGET_IP:TARGET_PORT -i <postgres_PEM_KEY> --input-file <path_to_your_input_file/name_of_your_input_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>  
+inspec exec https://github.com/CMSgov/cms-ars-3.1-moderate-crunchy-data-postgresql-stig-overlay/archive/master.tar.gz -t ssh://postgres@TARGET_IP:TARGET_PORT -i <postgres_PEM_KEY> --input-file <path_to_your_input_file/name_of_your_input_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>  
 ```
 
 Against a _**locally-hosted**_ instance logged in as the *postgres* user (i.e., InSpec installed on the target hosting the postgresql database)
 
 ```bash
-inspec exec https://github.com/CMSgov/cms-ars-3.1-moderate-crunchy-data-postgresql-9-stig-overlay/archive/master.tar.gz --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
+inspec exec https://github.com/CMSgov/cms-ars-3.1-moderate-crunchy-data-postgresql-stig-overlay/archive/master.tar.gz --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
 ```
 
 Against a _**docker-containerized**_ instance (i.e., InSpec installed on the node hosting the postgresql container):
 ```
-inspec exec https://github.com/CMSgov/cms-ars-3.1-moderate-crunchy-data-postgresql-9-stig-overlay/archive/master.tar.gz -t docker://<instance_id> --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
+inspec exec https://github.com/CMSgov/cms-ars-3.1-moderate-crunchy-data-postgresql-stig-overlay/archive/master.tar.gz -t docker://<instance_id> --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
 ```
 
 ### Different Run Options
@@ -201,18 +198,18 @@ When the __"runner"__ host uses this profile overlay for the first time, follow 
 ```
 mkdir profiles
 cd profiles
-git clone https://github.com/CMSgov/cms-ars-3.1-moderate-crunchy-data-postgresql-9-stig-overlay.git
-inspec archive cms-ars-3.1-moderate-crunchy-data-postgresql-9-stig-overlay
+git clone https://github.com/CMSgov/cms-ars-3.1-moderate-crunchy-data-postgresql-stig-overlay.git
+inspec archive cms-ars-3.1-moderate-crunchy-data-postgresql-stig-overlay
 inspec exec <name of generated archive> --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
 ```
 
 For every successive run, follow these steps to always have the latest version of this overlay and dependent profiles:
 
 ```
-cd cms-ars-3.1-moderate-crunchy-data-postgresql-9-stig-overlay
+cd cms-ars-3.1-moderate-crunchy-data-postgresql-stig-overlay
 git pull
 cd ..
-inspec archive cms-ars-3.1-moderate-crunchy-data-postgresql-9-stig-overlay --overwrite
+inspec archive cms-ars-3.1-moderate-crunchy-data-postgresql-stig-overlay --overwrite
 inspec exec <name of generated archive> --input-file=<path_to_your_inputs_file/name_of_your_inputs_file.yml> --reporter=cli json:<path_to_your_output_file/name_of_your_output_file.json>
 ```
 
@@ -220,7 +217,7 @@ inspec exec <name of generated archive> --input-file=<path_to_your_inputs_file/n
 
 The JSON results output file can be loaded into __[heimdall-lite](https://heimdall-lite.mitre.org/)__ for a user-interactive, graphical view of the InSpec results. 
 
-The JSON InSpec results file may also be loaded into a __[full heimdall server](https://github.com/mitre/heimdall)__, allowing for additional functionality such as to store and compare multiple profile runs.
+The JSON InSpec results file may also be loaded into a __[full heimdall server](https://github.com/mitre/heimdall2)__, allowing for additional functionality such as to store and compare multiple profile runs.
 
 ## Authors
 * Eugene Aronne - [ejaronne](https://github.com/ejaronne)
@@ -231,11 +228,11 @@ The JSON InSpec results file may also be loaded into a __[full heimdall server](
 * Shivani Karikar - [karikarshivani](https://github.com/karikarshivani)
 
 ## Contributing and Getting Help
-To report a bug or feature request, please open an [issue](https://github.com/CMSgov/cms-ars-3.1-moderate-crunchy-data-postgresql-9-stig-overlay/issues/new).
+To report a bug or feature request, please open an [issue](https://github.com/CMSgov/cms-ars-3.1-moderate-crunchy-data-postgresql-stig-overlay/issues/new).
 
 ### NOTICE
 
-© 2018-2020 The MITRE Corporation.
+© 2018-2022 The MITRE Corporation.
 
 Approved for Public Release; Distribution Unlimited. Case Number 18-3678.
 
