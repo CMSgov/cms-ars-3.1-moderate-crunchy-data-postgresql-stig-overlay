@@ -149,26 +149,25 @@ include_controls 'crunchy-data-postgresql-stig-baseline' do
     $ psql -c "SHOW ssl"
 
     If SSL is off, this is a finding.'
-    desc 'fix', 'Note: The following instructions use the PGDATA environment variable. See supplementary content APPENDIX-F for instructions on configuring PGDATA.
+	desc	'fix', "Note: The following instructions use the PGDATA and PGVER environment variables. See 
+	supplementary content APPENDIX-F for instructions on configuring PGDATA and APPENDIX-H for PGVER.
 
-    To configure PostgreSQL to use SSL, as a database administrator (shown here as "postgres"), edit postgresql.conf:
+	To configure PostgreSQL to use SSL as a database administrator (shown here as \"postgres\"), edit postgresql.conf:
 
-    $ sudo su - postgres
-    $ vi ${PGDATA?}/postgresql.conf
+	$ sudo su - postgres
+	$ vi ${PGDATA?}/postgresql.conf
 
-    Add the following parameter:
+	Add the following parameter:
 
-    ssl = on
+	ssl = on
 
-    Now, as the system administrator, reload the server with the new configuration:
+	Next, as the system administrator, reload the server with the new configuration:
 
-    # SYSTEMD SERVER ONLY
-    $ sudo systemctl reload postgresql-9.5
+	$ sudo systemctl reload postgresql-${PGVER?}
 
-    # INITD SERVER ONLY
-    $ sudo service postgresql-9.5 reload
+	For more information on configuring PostgreSQL to use SSL, see supplementary content APPENDIX-G.
 
-    For more information on configuring PostgreSQL to use SSL, see supplementary content APPENDIX-G.'
+	Deploy CMS-approved encrypting devices to protect the server on the network."
   end
 
   control "V-233587" do
@@ -214,25 +213,29 @@ include_controls 'crunchy-data-postgresql-stig-baseline' do
 
     If appropriate support staff are not notified immediately upon storage volume utilization reaching 80%, this is a finding.'
 
-    desc 'fix', 'Configure the system to notify appropriate support staff immediately upon storage volume utilization reaching 80%.
+    desc 'fix', "Note: The following instructions use the PGDATA and PGVER environment variables. See 
+	supplementary content APPENDIX-F for instructions on configuring PGDATA and APPENDIX-H for PGVER.
 
-    PostgreSQL does not monitor storage, however, it is possible to monitor storage with a script.
+	Configure the system to notify appropriate support staff immediately upon storage volume utilization reaching 80 
+	percent.
 
-    ##### Example Monitoring Script
+	PostgreSQL does not monitor storage, however, it is possible to monitor storage with a script.
 
-    #!/bin/bash
+	##### Example Monitoring Script
 
-    PGDATA=/var/lib/psql/9.5/data
-    CURRENT=$(df ${PGDATA?} | grep / | awk "{ print $5}" | sed "s/%//g")
-    THRESHOLD=80
+	#!/bin/bash
 
-    if [ "$CURRENT" -gt "$THRESHOLD" ] ; then
-    mail -s "Disk Space Alert" mail@support.com << EOF
-    The data directory volume is almost full. Used: $CURRENT
-    %EOF
-    fi
+	PGDATA=/var/lib/psql/${PGVER?}/data
+	CURRENT=$(df ${PGDATA?} | grep / | awk '{ print $5}' | sed 's/%//g')
+	THRESHOLD=80
 
-    Schedule this script in cron to run around the clock.'
+	if [ \"$CURRENT\" -gt \"$THRESHOLD\" ] ; then
+	mail -s 'Disk Space Alert' mail@support.com << EOF
+	The data directory volume is almost full. Used: $CURRENT
+	%EOF
+	fi
+
+	Schedule this script in cron to run around the clock."
     describe "Check system configuration for storage alerts." do
 		  skip "Review system configuration. If no script/tool is monitoring the partition for the PostgreSQL log directories, this is a finding."
 		  skip "If appropriate support staff are not notified immediately upon storage volume utilization reaching 80%, this is a finding"
