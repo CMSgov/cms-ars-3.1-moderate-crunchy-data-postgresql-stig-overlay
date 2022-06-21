@@ -1,6 +1,17 @@
 # encoding: utf-8
 
 include_controls 'crunchy-data-postgresql-stig-baseline' do
+
+  control "V-233517" do
+    impact 0.0
+    desc 'caveat', 'This is Not Applicable since the related security control is not included in CMS ARS 3.1'
+  end
+
+  control "V-233518" do
+    impact 0.0
+    desc 'caveat', 'This is Not Applicable since the related security control is not included in CMS ARS 3.1'
+  end
+
   control 'V-233519' do
     desc 'The CMS standard for authentication is CMS-approved PKI certificates. 
 
@@ -24,8 +35,69 @@ include_controls 'crunchy-data-postgresql-stig-baseline' do
 
   control 'V-233522' do
     impact 0.0
-    desc 'caveat', 'Not applicable for this CMS ARS 3.1 overlay, since the related security control is not applied to this system categorization in CMS ARS 3.1'
+    desc 'caveat', 'This is Not Applicable since the related security control is not applied to this system categorization in CMS ARS 3.1'
   end
+
+  control "V-233523" do
+    impact 0.0
+    desc 'caveat', 'This is Not Applicable since the related security control is not included in CMS ARS 3.1'
+  end
+
+  control "V-233530" do
+    impact 0.0
+    desc 'caveat', 'This is Not Applicable since the related security control is not included in CMS ARS 3.1'
+  end
+  
+  control 'V-233535' do
+    impact 0.0
+    desc 'caveat', 'This is Not Applicable since the related security control is not applied to this system categorization in CMS ARS 3.1'
+  end
+  
+  control "V-233539" do
+    impact 0.0
+    desc 'caveat', 'This is Not Applicable since the related security control is not included in CMS ARS 3.1'
+  end
+  
+  control "V-233540" do
+    impact 0.0
+    desc 'caveat', 'This is Not Applicable since the related security control is not included in CMS ARS 3.1'
+  end
+  
+  control "V-233541" do
+    impact 0.0
+    desc 'caveat', 'This is Not Applicable since the related security control is not included in CMS ARS 3.1'
+  end
+  
+  control "V-233543" do
+    impact 0.0
+    desc 'caveat', 'This is Not Applicable since the related security control is not included in CMS ARS 3.1'
+  end
+  
+  control "V-233544" do
+    impact 0.0
+    desc 'caveat', 'This is Not Applicable since the related security control is not included in CMS ARS 3.1'
+  end
+  
+  control 'V-233545' do
+    impact 0.0
+    desc 'caveat', 'This is Not Applicable since the related security control is not applied to this system categorization in CMS ARS 3.1'
+  end
+  
+  control 'V-233546' do
+    impact 0.0
+    desc 'caveat', 'This is Not Applicable since the related security control is not applied to this system categorization in CMS ARS 3.1'
+  end
+  
+  control 'V-233547' do
+    impact 0.0
+    desc 'caveat', 'This is Not Applicable since the related security control is not applied to this system categorization in CMS ARS 3.1'
+  end
+
+  control "V-233550" do
+    impact 0.0
+    desc 'caveat', 'This is Not Applicable since the related security control is not included in CMS ARS 3.1'
+  end
+  
 
   control 'V-233569' do
     desc 'For completeness of forensic analysis, it is necessary to track who logs on to PostgreSQL.
@@ -99,6 +171,16 @@ include_controls 'crunchy-data-postgresql-stig-baseline' do
     For more information on configuring PostgreSQL to use SSL, see supplementary content APPENDIX-G.'
   end
 
+  control "V-233587" do
+    impact 0.0
+    desc 'caveat', 'This is Not Applicable since the related security control is not included in CMS ARS 3.1'
+  end
+  
+  control "V-233589" do
+    impact 0.0
+    desc 'caveat', 'This is Not Applicable since the related security control is not included in CMS ARS 3.1'
+  end
+  
   control 'V-233596' do
     desc 'The CMS standard for authentication is CMS-approved PKI certificates.
          
@@ -107,8 +189,20 @@ include_controls 'crunchy-data-postgresql-stig-baseline' do
     In such cases, database passwords stored in clear text, using reversible encryption, or using unsalted hashes would be vulnerable to unauthorized disclosure. Database passwords must always be in the form of one-way, salted hashes when stored internally or externally to PostgreSQL.'
   end
 
+  control 'V-233597' do
+    impact 0.0
+    desc 'caveat', 'This is Not Applicable since the related security control is not applied to this system categorization in CMS ARS 3.1'
+  end
+  
+  control 'V-233598' do
+    impact 0.0
+    desc 'caveat', 'This is Not Applicable since the related security control is not applied to this system categorization in CMS ARS 3.1'
+  end
+  
   control 'V-233599' do
     title 'The system must provide a warning to appropriate support staff when allocated audit record storage volume reaches 80% of maximum audit record storage capacity.'
+    impact 0.0
+    desc 'caveat', 'This is Not Applicable since the related security control is not applied to this system categorization in CMS ARS 3.1'
     desc 'Organizations are required to use a central log management system, so, under normal conditions, the audit space allocated to PostgreSQL on its own server will not be an issue. However, space will still be required on PostgreSQL server for audit records in transit, and, under abnormal conditions, this could fill up. Since a requirement exists to halt processing upon audit failure, a service outage would result.
 
     If support personnel are not notified immediately upon storage volume utilization reaching 80%, they are unable to plan for storage capacity expansion. 
@@ -139,9 +233,21 @@ include_controls 'crunchy-data-postgresql-stig-baseline' do
     fi
 
     Schedule this script in cron to run around the clock.'
+    describe "Check system configuration for storage alerts." do
+		  skip "Review system configuration. If no script/tool is monitoring the partition for the PostgreSQL log directories, this is a finding."
+		  skip "If appropriate support staff are not notified immediately upon storage volume utilization reaching 80%, this is a finding"
+	  end
+    
+  end
+  
+  control 'V-233600' do
+    impact 0.0
+    desc 'caveat', 'This is Not Applicable since the related security control is not applied to this system categorization in CMS ARS 3.1'
   end
 
   control 'V-233601' do
+    impact 0.0
+    desc 'caveat', 'This is Not Applicable since the related security control is not applied to this system categorization in CMS ARS 3.1'
     desc 'The CMS standard for authentication of an interactive user is the presentation of a Personal Identity Verification (PIV) Card or other physical token bearing a valid, current, CMS-issued Public Key Infrastructure (PKI) certificate, coupled with a Personal Identification Number (PIN) to be entered by the user at the beginning of each session and whenever reauthentication is required.
 
     Without reauthentication, users may access resources or perform tasks for which they do not have authorization.
@@ -171,6 +277,9 @@ include_controls 'crunchy-data-postgresql-stig-baseline' do
   end
 
   control 'V-233603' do
+    impact 0.0
+    desc 'caveat', 'This is Not Applicable since the related security control is not included in CMS ARS 3.1'
+    
     title 'PostgreSQL must only accept end entity certificates issued by CMS PKI or CMS-approved PKI Certification Authorities (CAs) for the establishment of all encrypted sessions.'
     
     desc 'Only CMS-approved external PKIs have been evaluated to ensure that they have security controls and identity vetting procedures in place which are sufficient for CMS systems to rely on the identity asserted in the certificate. PKIs lacking sufficient security controls and identity vetting procedures risk being compromised and issuing certificates that enable adversaries to impersonate legitimate users. 
@@ -191,12 +300,17 @@ include_controls 'crunchy-data-postgresql-stig-baseline' do
 
   control 'V-233606' do
     impact 0.0
-    desc 'caveat', "Not applicable for this CMS ARS 3.1 overlay, since the related security control is not included in CMS ARS 3.1"
+    desc 'caveat', 'This is Not Applicable since the related security control is not included in CMS ARS 3.1'
    end
 
   control 'V-233610' do
     impact 0.0
-    desc 'caveat', "Not applicable for this CMS ARS 3.1 overlay, since the related security control is not included in CMS ARS 3.1"
+    desc 'caveat', 'This is Not Applicable since the related security control is not included in CMS ARS 3.1'
+  end
+
+  control 'V-233611' do
+    impact 0.0
+    desc 'caveat', 'This is Not Applicable since the related security control is not included in CMS ARS 3.1'
   end
 
   control 'V-233613' do
