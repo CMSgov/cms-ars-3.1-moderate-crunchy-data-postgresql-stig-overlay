@@ -313,12 +313,6 @@ include_controls 'crunchy-data-postgresql-stig-baseline' do
     desc 'caveat', 'This is Not Applicable since the related security control is not included in CMS ARS 3.1'
   end
 
-  control 'V-233613' do
-    describe 'For this CMS ARS 3.1 overlay, this control must be reviewed manually' do 
-      skip 'For this CMS ARS 3.1 overlay, this control must be reviewed manually'
-    end
-  end
-
   control 'V-233615' do
     desc 'The CMS standard for authentication is CMS-approved PKI certificates. Once a PKI certificate has been validated, it must be mapped to PostgreSQL user account for the authenticated identity to be meaningful to PostgreSQL and useful for authorization decisions.'
   end
